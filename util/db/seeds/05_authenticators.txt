@@ -1,0 +1,27 @@
+import Authenticator from "@/util/models/auth/authenticator";
+import { Knex } from "knex";
+import { Model } from "objection";
+
+/**
+ * @param { import("knex").Knex } knex
+ * @returns { Promise<void> }
+ */
+exports.seed = async function (knex : Knex): Promise<void> {
+  // Bind the model to knex
+  Model.knex(knex);
+
+  // Clear existing authenticators
+  await Authenticator.query().delete();
+
+  // Insert sample authenticator
+  await Authenticator.query().insert({
+    credentialID: "cred-xyz-123",
+    userId: "11111111-1111-1111-1111-111111111111",
+    providerAccountId: "google-123",
+    credentialPublicKey: "public-key-abc",
+    counter: 1,
+    credentialDeviceType: "single-device",
+    credentialBackedUp: false,
+    transports: "usb",
+  });
+};

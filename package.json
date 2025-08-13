@@ -1,0 +1,41 @@
+{
+  "name": "traffic",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "seed:run": "ts-node -r tsconfig-paths/register node_modules/knex/bin/cli.js seed:run --knexfile ./knexfile.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.2.0",
+    "knex": "^3.1.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.14.3",
+    "next": "15.4.6",
+    "next-auth": "^5.0.0-beta.29",
+    "objection": "^3.1.5",
+    "oracledb": "^6.9.0",
+    "pg": "^8.16.3",
+    "pg-query-stream": "^4.10.3",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "sqlite3": "^5.1.7",
+    "tedious": "^18.6.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.4.6",
+    "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5"
+  }
+}
