@@ -7,7 +7,8 @@
   --secondary-background: #373737;
   --button-color: #056ae1;
   --login-form-color: #212121;
-  --login-form-secondary: #2c2c2c;
+  --login-form-secondary: #1a1d21;
+  --login-form-first: #1e2122;
 }
 
 @theme inline {
@@ -18,6 +19,7 @@
   --color-button: var(--button-color);
   --color-login-form: var(--login-form-color);
   --color-l_f_s: var(--login-form-secondary);
+  --color-l_f_f: var(--login-form-first);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
