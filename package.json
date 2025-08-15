@@ -22,12 +22,14 @@
     "pg-query-stream": "^4.10.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-icons": "^5.5.0",
     "sqlite3": "^5.1.7",
     "tedious": "^18.6.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/feather-icons": "^4.29.4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
