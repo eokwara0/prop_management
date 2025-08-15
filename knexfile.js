@@ -17,7 +17,7 @@ module.exports = {
       max: 10
     },
      migrations: {
-      tableName: 'prop_migrations',
+      tableName: 'p_m',
       directory: './util/db/migrations',
       getNewMigrationName: (m) => {
         return `prop_migration_${new Date().toISOString().replace(/[-:.]/g, '')}_${m}.ts`;
@@ -43,7 +43,7 @@ module.exports = {
       max: 10
     },
      migrations: {
-      tableName: 'prop_migrations',
+      tableName: 'p_m',
       directory: './util/db/migrations',
       getNewMigrationName: (m) => {
         return `prop_migration_${new Date().toISOString().replace(/[-:.]/g, '')}_${m}.ts`;
@@ -68,7 +68,7 @@ module.exports = {
       max: 10
     },
     migrations: {
-      tableName: 'prop_migrations',
+      tableName: 'p_m',
       directory: './util/db/migrations',
       getNewMigrationName: (m) => {
         return `prop_migration_${new Date().toISOString().replace(/[-:.]/g, '')}_${m}.ts`;

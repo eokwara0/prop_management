@@ -3,13 +3,24 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --default-background: #1f1f1f;
+  --secondary-background: #373737;
+  --button-color: #056ae1;
+  --login-form-color: #212121;
+  --login-form-secondary: #2c2c2c;
 }
 
 @theme inline {
+  --color-d-background : var(--default-background);
+  --color-s-background : var(--secondary-background);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-button: var(--button-color);
+  --color-login-form: var(--login-form-color);
+  --color-l_f_s: var(--login-form-secondary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
 }
 
 @media (prefers-color-scheme: dark) {
