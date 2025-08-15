@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { redirect, RedirectType } from "next/navigation";
 import { signIn, providerMap } from "@/util/auth";
 import { AuthError } from "next-auth";
 import LoginInfoPage from "@/util/components/authentication/login.info";
@@ -17,7 +17,7 @@ export default async function SignInPage({
             action={async (formData) => {
               "use server";
               try {
-                await signIn("credentials", formData);
+                await signIn("credentials", formData ,redirect('/app' , RedirectType.push));
               } catch (error) {
                 if (error instanceof AuthError) {
                   return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);

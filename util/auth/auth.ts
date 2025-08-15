@@ -4,6 +4,9 @@ import GitHub from "next-auth/providers/github";
 import { KnexAdapter } from "./adapter";
 import knex from "./database.init";
 import { Provider } from "next-auth/providers";
+import { AuthService } from "../services/auth.service";
+
+const authService = new AuthService(knex);
 
 const providers: Provider[] = [
   Credentials({
@@ -20,6 +23,13 @@ const providers: Provider[] = [
       },
     },
     authorize: async (credentials) => {
+      if (
+        credentials &&
+        typeof credentials.email === "string" &&
+        typeof credentials.password === "string"
+      ) {
+        return authService.login(credentials.email, credentials.password);
+      }
       return null;
     },
   }),
@@ -45,7 +55,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   debug: true,
   adapter: KnexAdapter(knex),
   providers: providers,
-  pages : {
-    signIn : '/login'
-  }
+  pages: {
+    signIn: "/login",
+    // newUser : '/signup/oauth_'
+  },
 });
