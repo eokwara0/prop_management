@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useReducer } from "react";
-import LoginCircles from "./login_info.hook";
+import LoginCircles from "./login_info";
 import LoginInfoBox from "./login.info.box";
 
 

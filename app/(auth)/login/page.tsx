@@ -4,20 +4,26 @@ import { AuthError } from "next-auth";
 import LoginInfoPage from "@/util/components/authentication/login.info";
 
 const SIGNIN_ERROR_URL = "/error";
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function SignInPage({
-  searchParams
-} : { searchParams : Promise<{ [key : string] : string | string[] | undefined }>} ) {
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   return (
     <div className=" justify-between items-center content-center  h-screen flex flex-col gap-2 bg-gradient-to-tr from-l_f_s to-l_f_f">
-      <div className="justify-center items-center content-center  h-screen flex flex-col gap-2 bg-gradient-to-tr from-l_f_s to-l_f_f">
-        <div className=" bg-gradient-to-tr from-l_f_s to-l_f_f   transition-all  duration-75 w-fit max-sm:w-fit max-sm:h-[auto]  h-[auto] justify-between flex flex-col rounded-md p-4 gap-3">
+      <div className="justify-center items-center content-center  h-screen flex flex-col gap-2 ">
+        <div className=" transition-all  duration-75 w-fit max-sm:w-fit max-sm:h-[auto]  h-[auto] justify-between flex flex-col rounded-md p-4 gap-3">
           <form
             action={async (formData) => {
               "use server";
               try {
-                await signIn("credentials", formData ,redirect('/app' , RedirectType.push));
+                await signIn(
+                  "credentials",
+                  formData
+                  // redirect("/app", RedirectType.push)
+                );
               } catch (error) {
                 if (error instanceof AuthError) {
                   return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);
@@ -27,18 +33,17 @@ export default async function SignInPage({
             }}
             className=" flex flex-col gap-2 w-fit"
           >
-            <div className="h-[80%] flex flex-col items-left">
+            <div className="h-[100%] flex flex-col items-left">
               <label className="">
                 <p className="text-3xl ">Domio</p>
               </label>
-              <div className="h-4"></div>
               <label htmlFor="email" className="mb-5">
                 <div className="h-2"></div>
                 <input
                   name="email"
                   id="email"
                   placeholder="Email"
-                  className="bg-gradient-to-tr placeholder:text-sm from-login-form to-l_f_s pl-3 text-gray-50  w-full border-[0.5px] border-slate-50 rounded-md h-9"
+                  className="bg-gradient-to-tr placeholder:text-sm from-login-form to-l_f_s pl-3 text-gray-50  w-full border-[0.5px] border-slate-50 rounded-md h-8"
                 />
               </label>
               <label htmlFor="password" className="mb-5">
@@ -46,9 +51,12 @@ export default async function SignInPage({
                   name="password"
                   id="password"
                   placeholder="Password"
-                  className="bg-gradient-to-tr placeholder:text-sm from-login-form to-l_f_s  pl-3 text-gray-50  w-full border-[0.5px] border-slate-50 rounded-md h-9"
+                  className="bg-gradient-to-tr placeholder:text-sm from-login-form to-l_f_s  pl-3 text-gray-50  w-full border-[0.5px] border-slate-50 rounded-md h-8"
                 />
               </label>
+              <div className=" w-full flex justify-end text-blue-300">
+                  <a href="" className="text-xs">Forgot password ?</a>
+              </div>
             </div>
 
             <input
@@ -56,6 +64,9 @@ export default async function SignInPage({
               value="Sign In"
               className=" align-bottom h-10 rounded-md  w-full bg-button "
             />
+            <div className="text-[0.7rem] flex gap-2">
+              <p className=" font-extralight">Already have an account</p><a href="/signup" className="border-b-white border-b text-blue-300 ">Signup</a>
+            </div>
           </form>
 
           {Object.values(providerMap).map((provider) => (
@@ -65,7 +76,8 @@ export default async function SignInPage({
                 "use server";
                 try {
                   await signIn(provider.id, {
-                    redirectTo: (await searchParams).callbackUrl as string ?? ""
+                    redirectTo:
+                      ((await searchParams).callbackUrl as string) ?? "",
                   });
                 } catch (error) {
                   // Signin can fail for a number of reasons, such as the user

@@ -6,6 +6,7 @@
   --default-background: #1f1f1f;
   --secondary-background: #373737;
   --button-color: #056ae1;
+  --button-secondary : #019bff;
   --login-form-color: #212121;
   --login-form-secondary: #1a1d21;
   --login-form-first: #1e2122;
@@ -17,6 +18,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-button: var(--button-color);
+  --color-button-secondary: var(--button-secondary);
   --color-login-form: var(--login-form-color);
   --color-l_f_s: var(--login-form-secondary);
   --color-l_f_f: var(--login-form-first);

@@ -23,12 +23,16 @@ const providers: Provider[] = [
       },
     },
     authorize: async (credentials) => {
-      if (
+      try {
+         if (
         credentials &&
         typeof credentials.email === "string" &&
         typeof credentials.password === "string"
       ) {
-        return authService.login(credentials.email, credentials.password);
+        return await authService.login(credentials.email, credentials.password);
+      }
+      } catch (error) {
+        console.log('The error went on!', error);
       }
       return null;
     },
@@ -57,6 +61,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   providers: providers,
   pages: {
     signIn: "/login",
+    error : "/error"
     // newUser : '/signup/oauth_'
   },
 });

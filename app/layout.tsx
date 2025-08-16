@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Silkscreen } from "next/font/google";
+import { Geist_Mono, Karla, Lexend_Deca, Silkscreen } from "next/font/google";
 import "./globals.css";
 
 // const geistSans = Geist({
@@ -7,10 +7,9 @@ import "./globals.css";
 //   subsets: ["latin"],
 // });
 
-const silkScreen = Silkscreen({
+const silkScreen = Lexend_Deca({
   subsets : ['latin'],
   weight : '400'
-
 });
 
 // const geistMono = Geist_Mono({
