@@ -59,6 +59,9 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   debug: true,
   adapter: KnexAdapter(knex),
   providers: providers,
+  callbacks : {
+    
+  },
   pages: {
     signIn: "/login",
     error : "/error"

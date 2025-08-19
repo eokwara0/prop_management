@@ -7,7 +7,7 @@ const signupValidationContext = createContext<SignupPasswordValidationType>({
   numbers: [],
 });
 export const signupDispatchContext = createContext<
-  React.Dispatch<{ type: SignupPasswordActionType; num: number }> | undefined
+  React.Dispatch<{ type: SignupPasswordActionType; num: number[] }> | undefined
 >(undefined);
 
 export enum SignupPasswordActionType {
@@ -17,20 +17,20 @@ export enum SignupPasswordActionType {
 
 export const SignupPasswordReducer = (
   state: SignupPasswordValidationType,
-  action: { type: SignupPasswordActionType; num: number }
+  action: { type: SignupPasswordActionType; num: number[] }
 ) => {
   switch (action.type) {
     case SignupPasswordActionType.APPEND:
       return {
         ...state,
-        numbers: [...state.numbers, action.num].sort(),
+        numbers: [...action.num].sort(),
       };
     case SignupPasswordActionType.DELETE:
       return {
         ...state,
         numbers: state.numbers
           .filter((c) => {
-            return c !== action.num;
+            return c !== action.num.pop();
           })
           .sort((a, b) => a - b),
       };

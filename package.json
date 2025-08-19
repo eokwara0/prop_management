@@ -24,7 +24,8 @@
     "react-dom": "19.1.0",
     "react-icons": "^5.5.0",
     "sqlite3": "^5.1.7",
-    "tedious": "^18.6.1"
+    "tedious": "^18.6.1",
+    "zod": "^4.0.17"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

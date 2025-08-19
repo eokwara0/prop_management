@@ -12,7 +12,9 @@ export default function SignupPasswordValidationProvider({
   children: React.ReactNode;
 }) {
   const [state, dispatch] = useReducer(SignupPasswordReducer, {
-    numbers: [],
+    numbers : [],
+
+    
   });
   return (
     <signupDispatchContext.Provider value={dispatch}>

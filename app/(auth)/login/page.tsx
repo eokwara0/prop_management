@@ -1,7 +1,9 @@
-import { redirect, RedirectType } from "next/navigation";
+import { redirect } from "next/navigation";
 import { signIn, providerMap } from "@/util/auth";
-import { AuthError } from "next-auth";
+import { AuthError } from "next-auth"
+import AppLogo from '@/assets/logo/icon.png';
 import LoginInfoPage from "@/util/components/authentication/login.info";
+import Image from "next/image";
 
 const SIGNIN_ERROR_URL = "/error";
 export const dynamic = "force-dynamic";
@@ -14,7 +16,7 @@ export default async function SignInPage({
   return (
     <div className=" justify-between items-center content-center  h-screen flex flex-col gap-2 bg-gradient-to-tr from-l_f_s to-l_f_f">
       <div className="justify-center items-center content-center  h-screen flex flex-col gap-2 ">
-        <div className=" transition-all  duration-75 w-fit max-sm:w-fit max-sm:h-[auto]  h-[auto] justify-between flex flex-col rounded-md p-4 gap-3">
+        <div className=" transition-all  duration-75 w-full max-sm:w-full max-sm:h-[auto]  h-[auto] justify-between flex flex-col rounded-md p-4 gap-3">
           <form
             action={async (formData) => {
               "use server";
@@ -31,19 +33,23 @@ export default async function SignInPage({
                 throw error;
               }
             }}
-            className=" flex flex-col gap-2 w-fit"
+            className=" flex flex-col gap-2 w-full"
           >
             <div className="h-[100%] flex flex-col items-left">
-              <label className="">
-                <p className="text-3xl ">Domio</p>
+              <label className=" mb-6">
+                <div className="flex  gap-3 justify-start items-center">
+                 <Image src={AppLogo} alt={"app logo"} width={50} height={50} />
+                <p className="text-xl ">Domio</p>
+
+                </div>
               </label>
               <label htmlFor="email" className="mb-5">
                 <div className="h-2"></div>
                 <input
                   name="email"
                   id="email"
-                  placeholder="Email"
-                  className="bg-gradient-to-tr placeholder:text-sm from-login-form to-l_f_s pl-3 text-gray-50  w-full border-[0.5px] border-slate-50 rounded-md h-8"
+                  placeholder="Email or username"
+                  className="bg-gradient-to-tr placeholder:text-sm from-login-form to-l_f_s pl-3 text-gray-50  w-full border border-slate-50 rounded-md h-8"
                 />
               </label>
               <label htmlFor="password" className="mb-5">
@@ -51,24 +57,33 @@ export default async function SignInPage({
                   name="password"
                   id="password"
                   placeholder="Password"
-                  className="bg-gradient-to-tr placeholder:text-sm from-login-form to-l_f_s  pl-3 text-gray-50  w-full border-[0.5px] border-slate-50 rounded-md h-8"
+                  className="bg-gradient-to-tr placeholder:text-sm from-login-form to-l_f_s  pl-3 text-gray-50  w-full border border-slate-50 rounded-md h-8"
                 />
               </label>
-              <div className=" w-full flex justify-end text-blue-300">
-                  <a href="" className="text-xs">Forgot password ?</a>
-              </div>
             </div>
 
             <input
               type="submit"
               value="Sign In"
-              className=" align-bottom h-10 rounded-md  w-full bg-button "
+              className=" align-bottom h-10 p-2 rounded-md  w-full bg-button "
             />
-            <div className="text-[0.7rem] flex gap-2">
-              <p className=" font-extralight">Already have an account</p><a href="/signup" className="border-b-white border-b text-blue-300 ">Signup</a>
+            <div className="text-[0.7rem] flex flex-col  gap mt-3">
+              <div className=" w-full flex justify-start text-blue-300">
+                <a href="" className="text-xs">
+                  Forgot password ?
+                </a>
+              </div>
+              <div className="flex gap-2">
+                <p className=" font-extralight">Don&apos;t have an account?</p>{" "}
+                <span>
+                  <a href="/signup" className="border-b-white text-blue-300 ">
+                    Sign up
+                  </a>
+                </span>
+              </div>
             </div>
           </form>
-
+         
           {Object.values(providerMap).map((provider) => (
             <form
               key={provider.id}
