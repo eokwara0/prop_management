@@ -14,9 +14,9 @@ export default async function SignInPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   return (
-    <div className=" justify-between items-center content-center  h-screen flex flex-col gap-2 bg-gradient-to-tr from-l_f_s to-l_f_f">
-      <div className="justify-center items-center content-center  h-screen flex flex-col gap-2 ">
-        <div className=" transition-all  duration-75 w-full max-sm:w-full max-sm:h-[auto]  h-[auto] justify-between flex flex-col rounded-md p-4 gap-3">
+    <div className="min-h-[calc(100vh-2rem)] justify-center items-center content-center flex flex-col gap-2 bg-gradient-to-tr from-l_f_s to-l_f_f">
+      <div className="justify-center items-center content-center  h-full flex flex-col gap-2 ">
+        <div className=" transition-all  duration-75 w-full max-sm:w-full max-sm:h-[auto]  h-[auto] justify-between  flex flex-col rounded-md p-4 gap-3">
           <form
             action={async (formData) => {
               "use server";
@@ -68,7 +68,7 @@ export default async function SignInPage({
               className=" align-bottom h-10 p-2 rounded-md  w-full bg-button "
             />
             <div className="text-[0.7rem] flex flex-col  gap mt-3">
-              <div className=" w-full flex justify-start text-blue-300">
+              <div className=" w-full flex justify-start text-button">
                 <a href="" className="text-xs">
                   Forgot password ?
                 </a>
@@ -76,7 +76,7 @@ export default async function SignInPage({
               <div className="flex gap-2">
                 <p className=" font-extralight">Don&apos;t have an account?</p>{" "}
                 <span>
-                  <a href="/signup" className="border-b-white text-blue-300 ">
+                  <a href="/signup" className="border-b-white text-button ">
                     Sign up
                   </a>
                 </span>

@@ -5,11 +5,16 @@
   --foreground: #171717;
   --default-background: #1f1f1f;
   --secondary-background: #373737;
-  --button-color: #056ae1;
-  --button-secondary : #019bff;
+  --button-color: #06cf9c;
+  --button-secondary : #049c75;
   --login-form-color: #212121;
   --login-form-secondary: #1a1d21;
   --login-form-first: #1e2122;
+  /* --banner-primary:#00e5ff; */
+  --banner-primary:#06cf9c;
+  --banner-secondary: #049c75;
+  --banner-error-primary: #e22859;
+  --banner-error-secondary: #e22859;
 }
 
 @theme inline {
@@ -22,6 +27,10 @@
   --color-login-form: var(--login-form-color);
   --color-l_f_s: var(--login-form-secondary);
   --color-l_f_f: var(--login-form-first);
+  --color-banner-primary: var(--banner-primary);
+  --color-banner-secondary: var(--banner-secondary);
+  --color-banner-error-primary: var(--banner-error-primary);
+  --color-banner-error-secondary: var(--banner-error-secondary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 

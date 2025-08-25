@@ -18,13 +18,20 @@ export async function POST(req: NextRequest) {
         name : name,
         userType : userType
       });
-      console.log("response from data " , response);
       return NextResponse.json(response, {status :  200 });
     }
   } catch (error) {
     return NextResponse.json(
-      { error: (error as Error).message },
-      { status: 500 }
+      {
+         data : {
+          message : (error as Error).message,
+          error : {
+            status : 500 , 
+            message : "Internal Server Error"
+          }
+         }
+      },
+      { status: 500 , statusText : (error as Error).message }
     );
   }
 }

@@ -11,6 +11,7 @@ import { EncryptPassword } from "@/util/util/helper.function";
 import { Zsignup } from "@/util/interfaces/signup.data";
 import { redirect, useRouter } from "next/navigation";
 import { UserType } from "@/util/interfaces/roles";
+import { useBanner } from "@/util/components/context/banner/banner.hook";
 
 export const enum SignupStatus {
   SUCCESS = "success",
@@ -23,6 +24,7 @@ const strongPasswordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
 
 export default function SignUpPage() {
   const [password, setPassword] = useState("");
+  const { showBanner, closeBanner } = useBanner();
   const router = useRouter();
   const [retype, setRetype] = useState("");
   const [status, setStatus] = useState<SignupStatus>(SignupStatus.INITIAL);
@@ -48,17 +50,26 @@ export default function SignUpPage() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(
-            {
-              email: email,
-              password: password,
-              name: name,
-              userType: UserType.Admin
-            }
-          ),
+          body: JSON.stringify({
+            email: email,
+            password: password,
+            name: name,
+            userType: UserType.Admin,
+          }),
         });
 
         if (!response.ok) {
+          const data = await response.json();
+          console.log(data);
+          showBanner({
+            message: (
+              <div className="px-4 py-2 w-full flex gap-2 justify-start items-start text-left ">
+                <p className="text-xs font-medium  text-left">{data.data.error.message}</p>
+                <span className="font-extralight text-xs text-left">{data.data.message}</span>
+              </div>
+            ),
+            type: "error",
+          });
           throw new Error("Failed to sign up");
         }
         setStatus(SignupStatus.SUCCESS);
@@ -66,20 +77,18 @@ export default function SignUpPage() {
       } catch (error) {
         console.error("Signup error:", error);
         setStatus(SignupStatus.ERROR);
-
       }
-    }else{
+    } else {
       setStatus(SignupStatus.ERROR);
       console.error("Invalid form data");
     }
-    
   };
 
   return (
     <SignupProvider>
       <SignupPasswordValidationProvider>
         {
-          <div className="min-h-screen flex justify-center items-center bg-gradient-to-tr from-l_f_s to-l_f_f">
+          <div className="min-h-[calc(100vh-2rem)] flex justify-center items-center bg-gradient-to-tr from-l_f_s to-l_f_f">
             <div className="w-full max-w-sm flex flex-col items-center p-4 gap-3 rounded-md">
               <form
                 id="signup_form"
