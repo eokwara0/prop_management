@@ -10,6 +10,12 @@ exports.up = async function (knex) {
       .references("id")
       .inTable("user")
       .onDelete("CASCADE");
+    table
+      .integer("userTypeId")
+      .notNullable()
+      .references("id")
+      .inTable("user_type")
+      .onDelete("CASCADE");
 
     table.text("passwordHash").notNullable();
     table.text("passwordSalt"); // optional, depending on your hashing strategy

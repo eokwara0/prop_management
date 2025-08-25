@@ -54,7 +54,12 @@ export class AuthService {
     return { message: "User logged out successfully" };
   }
 
-  static async register(userData: { email: string; password: string , name : string  }) {
+  static async register(userData: {
+    email: string;
+    password: string;
+    name: string;
+    userType: string;
+  }) {
     let trx;
     try {
       trx = await this.knex.transaction();
@@ -70,7 +75,7 @@ export class AuthService {
       const [user] = await this.knex("user")
         .insert({
           email: userData.email,
-          name : userData.name,
+          name: userData.name,
         })
         .returning("*")
         .transacting(trx);
@@ -90,11 +95,20 @@ export class AuthService {
       if (!account) {
         throw new Error("Failed to create account");
       }
+      const userType = await this.knex("user_type")
+        .where({ name: userData.userType })
+        .first()
+        .transacting(trx);
+
+      if (!userType) {
+        throw new Error("Invalid user type");
+      }
       const [userPass] = await this.knex("user_pass")
         .insert({
           userId: user.id,
           passwordHash: await EncryptPassword(userData.password), // In a real application, hash the password
           passwordSalt: process.env.PASS_SALT,
+          userTypeId: userType.id,
         })
         .returning("*")
         .transacting(trx);

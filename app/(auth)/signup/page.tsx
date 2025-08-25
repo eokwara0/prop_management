@@ -10,6 +10,7 @@ import Loader from "@/util/components/loader/loader";
 import { EncryptPassword } from "@/util/util/helper.function";
 import { Zsignup } from "@/util/interfaces/signup.data";
 import { redirect, useRouter } from "next/navigation";
+import { UserType } from "@/util/interfaces/roles";
 
 export const enum SignupStatus {
   SUCCESS = "success",
@@ -38,7 +39,9 @@ export default function SignUpPage() {
     const email = formData.get("signup_email") as string;
     const name = formData.get("signup_name") as string;
 
-    if (isValid && email && name) {
+    console.log("Form Data:", { email, name, password, retype });
+
+    if (isValid && email) {
       try {
         const response = await fetch("/api/signup", {
           method: "POST",
@@ -46,11 +49,12 @@ export default function SignUpPage() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(
-            Zsignup.safeParse({
+            {
               email: email,
               password: password,
               name: name,
-            })
+              userType: UserType.Admin
+            }
           ),
         });
 

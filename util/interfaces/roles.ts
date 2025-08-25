@@ -15,3 +15,11 @@ export enum Role {
   R_A = "R_A",         // Reports & Audit
   APP_S = "APP_S"      // App Settings
 }
+
+
+export enum UserType {
+  Admin = "Admin",
+  Tenant = "Tenant",
+  Manager = "Manager",
+  Finance = "Finance",
+}

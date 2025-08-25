@@ -1,4 +1,5 @@
 import z, { email } from "zod";
+import { UserType } from "./roles";
 
 export interface SignupData {
   name: string;
@@ -15,6 +16,7 @@ export const Zsignup = z.object({
   name : z.string().length(100),
   email : z.email(),
   password: z.string().regex(/^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{8,})\S$/),
+  userType : z.string()
 });
 export const ZsignupData = z.object({
   name: z.string().length(100),

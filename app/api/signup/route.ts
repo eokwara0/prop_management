@@ -8,13 +8,15 @@ import { NextRequest, NextResponse } from "next/server";
  */
 export async function POST(req: NextRequest) {
   AuthService.getInstance(knex);
-  const { data } = await req.json();
-  const { email, password } = data;
+  const data = await req.json();
+  const { email, password, name , userType  } = data;
   try {
     if (data) {
       const response = await AuthService.register({
         email: email,
         password: password,
+        name : name,
+        userType : userType
       });
       console.log("response from data " , response);
       return NextResponse.json(response, {status :  200 });
