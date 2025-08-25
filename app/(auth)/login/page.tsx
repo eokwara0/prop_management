@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { signIn, providerMap } from "@/util/auth";
 import { AuthError } from "next-auth"
-import AppLogo from '@/assets/logo/icon.png';
+import AppLogo from '@/assets/logo/icon2.png';
 import LoginInfoPage from "@/util/components/authentication/login.info";
 import Image from "next/image";
 

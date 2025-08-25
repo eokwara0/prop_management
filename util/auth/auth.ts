@@ -6,7 +6,7 @@ import knex from "./database.init";
 import { Provider } from "next-auth/providers";
 import { AuthService } from "../services/auth.service";
 
-const authService = new AuthService(knex);
+AuthService.getInstance(knex);
 
 const providers: Provider[] = [
   Credentials({
@@ -29,7 +29,7 @@ const providers: Provider[] = [
         typeof credentials.email === "string" &&
         typeof credentials.password === "string"
       ) {
-        return await authService.login(credentials.email, credentials.password);
+        return AuthService.login(credentials.email, credentials.password);
       }
       } catch (error) {
         console.log('The error went on!', error);

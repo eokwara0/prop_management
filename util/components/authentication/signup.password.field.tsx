@@ -8,11 +8,9 @@ import { SignupContextAction, SignupDispatchContext } from "@/util/components/co
 import { SignupData } from "@/util/interfaces/signup.data";
 
 export default function PasswordField({
-  children,
   action ,
   val
 }: {
-  children: React.ReactNode;
   action : Dispatch<SetStateAction<string>>;
   val : string
 }) {
@@ -54,7 +52,6 @@ export default function PasswordField({
           pattern="^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$"
           className="bg-gradient-to-tr placeholder:text-sm from-login-form to-l_f_s  pl-3 text-gray-50  w-full border border-slate-50 rounded-md h-8"
         />
-        {children}
       </div>
     </>
   );

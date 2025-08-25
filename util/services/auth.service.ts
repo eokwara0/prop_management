@@ -2,43 +2,111 @@ import { Knex } from "knex";
 import User from "../models/auth/user";
 import UserPass from "../models/auth/user_pass";
 import { AdapterUser } from "next-auth/adapters";
+import { EncryptPassword } from "../util/helper.function";
+import { email } from "zod";
 
 export class AuthService {
-  private knex: Knex;
+  static knex: Knex;
 
-  constructor(knex: Knex) {
-    this.knex = knex;
+  static getInstance(knex: Knex): AuthService {
+    if (!AuthService.knex) {
+      AuthService.knex = knex;
+    }
+    return new AuthService();
   }
 
-  async login(email: string, password: string) : Promise<AdapterUser>{
-    const user = await User.query().where({ email: email }).first();
+  static async login(email: string, password: string): Promise<AdapterUser> {
+    let trx;
+    try {
+      if (!email || !password) {
+        throw new Error("Email and password are required");
+      }
+      trx = await this.knex.transaction();
 
-    if (!user) {
-      throw new Error("User not found");
+      const user = await User.query()
+        .where({ email: email })
+        .first()
+        .transacting(trx);
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+      const user_pass = await UserPass.query()
+        .where("userId", user.id)
+        .first()
+        .transacting(trx);
+      if (!user_pass) {
+        throw new Error("User has no password");
+      }
+      // Here you would typically check the password hash
+      // For simplicity, we assume the password is correct
+      trx.commit();
+      return user;
+    } catch (error) {
+      trx?.rollback();
+      throw error;
     }
-    const user_pass = await UserPass.query().where("userId", user.id).first();
-    if (!user_pass) {
-      throw new Error("User has no password");
-    }
-    // Here you would typically check the password hash
-    // For simplicity, we assume the password is correct
-    return user;
   }
 
-  async logout(userId: string) {
+  static async logout(userId: string) {
     // In a real application, you might invalidate the session or token
     // Here we just return a success message
     return { message: "User logged out successfully" };
   }
 
-  async register(userData: { email: string; password: string; name?: string }) {
-    const existingUser = await this.knex("user")
-      .where({ email: userData.email })
-      .first();
-    if (existingUser) {
-      throw new Error("User already exists");
+  static async register(userData: { email: string; password: string , name : string  }) {
+    let trx;
+    try {
+      trx = await this.knex.transaction();
+
+      const existingUser = await this.knex("user")
+        .where({ email: userData.email })
+        .first()
+        .transacting(trx);
+      if (existingUser) {
+        throw new Error("User already exists");
+      }
+
+      const [user] = await this.knex("user")
+        .insert({
+          email: userData.email,
+          name : userData.name,
+        })
+        .returning("*")
+        .transacting(trx);
+      if (!user) {
+        throw new Error("Failed to create user");
+      }
+
+      const [account] = await this.knex("account")
+        .insert({
+          userId: user.id,
+          provider: "credentials",
+          type: "credentials",
+          providerAccountId: userData.email,
+        })
+        .returning("*")
+        .transacting(trx);
+      if (!account) {
+        throw new Error("Failed to create account");
+      }
+      const [userPass] = await this.knex("user_pass")
+        .insert({
+          userId: user.id,
+          passwordHash: await EncryptPassword(userData.password), // In a real application, hash the password
+          passwordSalt: process.env.PASS_SALT,
+        })
+        .returning("*")
+        .transacting(trx);
+
+      if (!userPass) {
+        throw new Error("Failed to create user password");
+      }
+      await trx.commit();
+      return { user };
+    } catch (error) {
+      await trx!.rollback();
+      throw error;
     }
-    const [newUser] = await this.knex("user").insert(userData).returning("*");
-    return newUser;
   }
 }
