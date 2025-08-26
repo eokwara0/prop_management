@@ -22,15 +22,17 @@ export default function BannerProvider({
     <BannerDispatchContext.Provider value={dispatch}>
       <BannerContext.Provider value={state || undefined}>
         <div
-          className={` justify-between items-center shadow-2xs  w-full ${state?.show ? 'h-8' : ''} bg-gradient-to-r ${
-            state?.type === "error"
-              ? "from-banner-error-primary"
-              : "from-banner-primary"
-          } ${
-            state?.type === "error"
-              ? "to-banner-error-secondary"
-              : "to-banner-secondary"
-          } flex`}
+          className={` justify-between items-center shadow-2xs  w-full ${state?.show ? 'h-8' : ''} bg-gradient-to-r ${state?.type === "info"
+              ? "from-banner-info-primary" :
+              state?.type === "error"
+                ? "from-banner-error-primary"
+                : "from-banner-primary"
+            } ${state?.type === "info" ?
+              "from-banner-info-secondary" :
+              state?.type === "error"
+                ? "to-banner-error-secondary"
+                : "to-banner-secondary"
+            } flex`}
         >
           <div>{state?.show ? state.message : null}</div>
           {state?.show ? (

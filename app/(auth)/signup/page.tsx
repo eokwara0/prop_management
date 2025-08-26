@@ -1,30 +1,24 @@
 "use client";
+import { useState } from "react";
+import {  useRouter } from "next/navigation";
+import { UserType } from "@/util/interfaces/roles";
+import { useBanner } from "@/util/components/context/banner/banner.hook";
 import SignupValidation from "@/util/components/authentication/signup.password.validation.component";
 import SignupPasswordValidationProvider from "@/util/components/context/authentication/signup.password.validation.provider";
 import AppLogo from "@/assets/logo/icon2.png";
 import Image from "next/image";
 import PasswordField from "@/util/components/authentication/signup.password.field";
-import { useState } from "react";
 import SignupProvider from "@/util/components/authentication/signup.provider";
 import Loader from "@/util/components/loader/loader";
-import { EncryptPassword } from "@/util/util/helper.function";
-import { Zsignup } from "@/util/interfaces/signup.data";
-import { redirect, useRouter } from "next/navigation";
-import { UserType } from "@/util/interfaces/roles";
-import { useBanner } from "@/util/components/context/banner/banner.hook";
+import { SignupStatus } from "@/util/interfaces/signup.data";
 
-export const enum SignupStatus {
-  SUCCESS = "success",
-  ERROR = "error",
-  INITIAL = "initial",
-  LOADING = "loading",
-}
+
 
 const strongPasswordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
 
 export default function SignUpPage() {
   const [password, setPassword] = useState("");
-  const { showBanner, closeBanner } = useBanner();
+  const { showBanner } = useBanner();
   const router = useRouter();
   const [retype, setRetype] = useState("");
   const [status, setStatus] = useState<SignupStatus>(SignupStatus.INITIAL);

@@ -1,5 +1,4 @@
 import z, { email } from "zod";
-import { UserType } from "./roles";
 
 export interface SignupData {
   name: string;
@@ -10,6 +9,13 @@ export interface SignupData {
   gender: string;
   address: string;
   DOB: Date;
+}
+
+export const enum SignupStatus {
+  SUCCESS = "success",
+  ERROR = "error",
+  INITIAL = "initial",
+  LOADING = "loading",
 }
 
 export const Zsignup = z.object({
