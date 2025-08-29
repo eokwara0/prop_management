@@ -22,7 +22,7 @@ export const useBanner = () => {
           type: BannerContextAction.CLOSE,
           value: { message, type },
         });
-      }, 5000);
+      }, 8000);
       return () => clearTimeout(timer);
     }
   };

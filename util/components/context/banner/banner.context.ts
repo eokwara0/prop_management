@@ -47,12 +47,19 @@ export const BannerReducer = (
         ? { message: action.value.message, type: action.value.type, show: true }
         : state;
     case BannerContextAction.CLOSE:
-       return action.value
-        ? { message: action.value.message, type: action.value.type, show: false }
+      return action.value
+        ? {
+            message: action.value.message,
+            type: action.value.type,
+            show: false,
+          }
         : state;
     default:
       throw new Error(`unknown action type: ${action.type}`);
   }
 };
 
-export { BannerContext, BannerDispatchContext };
+export {
+  BannerContext,
+  BannerDispatchContext,
+};

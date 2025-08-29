@@ -4,27 +4,20 @@ import SignupPasswordValidationProvider from "@/util/components/context/authenti
 import AppLogo from "@/assets/logo/icon2.png";
 import Image from "next/image";
 import PasswordField from "@/util/components/authentication/signup.password.field";
-import { useState } from "react";
+import {  useState } from "react";
 import SignupProvider from "@/util/components/authentication/signup.provider";
 import Loader from "@/util/components/loader/loader";
-import { EncryptPassword } from "@/util/util/helper.function";
-import { Zsignup } from "@/util/interfaces/signup.data";
-import { redirect, useRouter } from "next/navigation";
 import { UserType } from "@/util/interfaces/roles";
 import { useBanner } from "@/util/components/context/banner/banner.hook";
-
-export const enum SignupStatus {
-  SUCCESS = "success",
-  ERROR = "error",
-  INITIAL = "initial",
-  LOADING = "loading",
-}
+import Modal from "@/util/components/modal/modal";
+import { useRouter } from "next/navigation";
+import { SignupStatus } from "@/util/interfaces/signupstatus";
 
 const strongPasswordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
 
 export default function SignUpPage() {
   const [password, setPassword] = useState("");
-  const { showBanner, closeBanner } = useBanner();
+  const { showBanner } = useBanner();
   const router = useRouter();
   const [retype, setRetype] = useState("");
   const [status, setStatus] = useState<SignupStatus>(SignupStatus.INITIAL);
@@ -40,9 +33,6 @@ export default function SignUpPage() {
     const formData = new FormData(e.currentTarget);
     const email = formData.get("signup_email") as string;
     const name = formData.get("signup_name") as string;
-
-    console.log("Form Data:", { email, name, password, retype });
-
     if (isValid && email) {
       try {
         const response = await fetch("/api/signup", {
@@ -60,20 +50,24 @@ export default function SignUpPage() {
 
         if (!response.ok) {
           const data = await response.json();
-          console.log(data);
           showBanner({
             message: (
-              <div className="px-4 py-2 w-full flex gap-2 justify-start items-start text-left ">
-                <p className="text-xs font-medium  text-left">{data.data.error.message}</p>
-                <span className="font-extralight text-xs text-left">{data.data.message}</span>
-              </div>
+              <Modal
+                firstMessage={data.data.error.message}
+                secondMessage={data.data.message}
+              />
             ),
             type: "error",
           });
-          throw new Error("Failed to sign up");
+          setStatus(SignupStatus.ERROR);
+        } else {
+          setStatus(SignupStatus.SUCCESS);
+          showBanner({
+            message : <Modal firstMessage = "Account created successfully" secondMessage = "You can now login" />,
+            type : "success"
+          });
+          router.push("/login");
         }
-        setStatus(SignupStatus.SUCCESS);
-        router.push("/login");
       } catch (error) {
         console.error("Signup error:", error);
         setStatus(SignupStatus.ERROR);
@@ -88,7 +82,9 @@ export default function SignUpPage() {
     <SignupProvider>
       <SignupPasswordValidationProvider>
         {
-          <div className="min-h-[calc(100vh-2rem)] flex justify-center items-center bg-gradient-to-tr from-l_f_s to-l_f_f">
+          <div
+            className={`min-h-[calc(100vh)] flex justify-center items-center bg-gradient-to-tr from-l_f_s to-l_f_f`}
+          >
             <div className="w-full max-w-sm flex flex-col items-center p-4 gap-3 rounded-md">
               <form
                 id="signup_form"
@@ -106,7 +102,7 @@ export default function SignUpPage() {
 
                 {/* {Name} */}
                 <input
-                  className="bg-gradient-to-tr from-login-form to-l_f_s placeholder:text-sm pl-3 text-gray-50 w-full border border-slate-50 rounded-md h-9"
+                  className="bg-gradient-to-tr from-login-form to-l_f_s placeholder:text-sm pl-3 text-gray-50 w-full border border-slate-50 rounded-md h-11"
                   placeholder="Name"
                   type="text"
                   name="signup_name"
@@ -119,7 +115,7 @@ export default function SignUpPage() {
                   id="signup_email"
                   name="signup_email"
                   placeholder="Email address"
-                  className="bg-gradient-to-tr from-login-form to-l_f_s placeholder:text-sm pl-3 text-gray-50 w-full border border-slate-50 rounded-md h-9"
+                  className="bg-gradient-to-tr from-login-form to-l_f_s placeholder:text-sm pl-3 text-gray-50 w-full border border-slate-50 rounded-md h-11"
                   required
                 />
                 {/* Password */}
@@ -133,7 +129,7 @@ export default function SignUpPage() {
                   value={retype}
                   onChange={(e) => setRetype(e.currentTarget.value)}
                   placeholder="Retype Password"
-                  className="bg-gradient-to-tr from-login-form to-l_f_s placeholder:text-sm pl-3 text-gray-50 w-full border border-slate-50 rounded-md h-9"
+                  className="bg-gradient-to-tr from-login-form to-l_f_s placeholder:text-sm pl-3 text-gray-50 w-full border border-slate-50 rounded-md h-11"
                   required
                 />
                 {/* Continue */}

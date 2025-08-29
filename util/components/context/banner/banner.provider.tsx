@@ -1,5 +1,5 @@
 "use client";
-import { useReducer } from "react";
+import { useReducer, useRef } from "react";
 import {
   BannerContext,
   BannerContextAction,
@@ -18,11 +18,14 @@ export default function BannerProvider({
     type: "info",
     show: false,
   });
+
   return (
     <BannerDispatchContext.Provider value={dispatch}>
       <BannerContext.Provider value={state || undefined}>
         <div
-          className={` justify-between items-center shadow-2xs  w-full ${state?.show ? 'h-8' : ''} bg-gradient-to-r ${
+          className={` justify-between items-center shadow-2xs  w-full ${
+            state?.show ? "h-8" : ""
+          } bg-gradient-to-r ${
             state?.type === "error"
               ? "from-banner-error-primary"
               : "from-banner-primary"

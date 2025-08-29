@@ -14,7 +14,7 @@ export default async function SignInPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   return (
-    <div className="min-h-[calc(100vh-2rem)] justify-center items-center content-center flex flex-col gap-2 bg-gradient-to-tr from-l_f_s to-l_f_f">
+    <div className="min-h-screen justify-center items-center content-center flex flex-col gap-2 bg-gradient-to-tr from-l_f_s to-l_f_f">
       <div className="justify-center items-center content-center  h-full flex flex-col gap-2 ">
         <div className=" transition-all  duration-75 w-full max-sm:w-full max-sm:h-[auto]  h-[auto] justify-between  flex flex-col rounded-md p-4 gap-3">
           <form
@@ -44,12 +44,11 @@ export default async function SignInPage({
                 </div>
               </label>
               <label htmlFor="email" className="mb-5">
-                <div className="h-2"></div>
                 <input
                   name="email"
                   id="email"
                   placeholder="Email or username"
-                  className="bg-gradient-to-tr placeholder:text-sm from-login-form to-l_f_s pl-3 text-gray-50  w-full border border-slate-50 rounded-md h-8"
+                  className="bg-gradient-to-tr placeholder:text-sm from-login-form to-l_f_s pl-3 text-gray-50  w-full border border-slate-50 rounded-md h-11"
                 />
               </label>
               <label htmlFor="password" className="mb-5">
@@ -57,7 +56,7 @@ export default async function SignInPage({
                   name="password"
                   id="password"
                   placeholder="Password"
-                  className="bg-gradient-to-tr placeholder:text-sm from-login-form to-l_f_s  pl-3 text-gray-50  w-full border border-slate-50 rounded-md h-8"
+                  className="bg-gradient-to-tr placeholder:text-sm from-login-form to-l_f_s  pl-3 text-gray-50  w-full border border-slate-50 rounded-md h-11"
                 />
               </label>
             </div>
