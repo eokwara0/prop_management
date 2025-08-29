@@ -1,17 +1,19 @@
 "use client";
+import { useState } from "react";
+import {  useRouter } from "next/navigation";
+import { UserType } from "@/util/interfaces/roles";
+import { useBanner } from "@/util/components/context/banner/banner.hook";
 import SignupValidation from "@/util/components/authentication/signup.password.validation.component";
 import SignupPasswordValidationProvider from "@/util/components/context/authentication/signup.password.validation.provider";
 import AppLogo from "@/assets/logo/icon2.png";
 import Image from "next/image";
 import PasswordField from "@/util/components/authentication/signup.password.field";
-import {  useState } from "react";
 import SignupProvider from "@/util/components/authentication/signup.provider";
 import Loader from "@/util/components/loader/loader";
-import { UserType } from "@/util/interfaces/roles";
-import { useBanner } from "@/util/components/context/banner/banner.hook";
 import Modal from "@/util/components/modal/modal";
-import { useRouter } from "next/navigation";
-import { SignupStatus } from "@/util/interfaces/signupstatus";
+import { SignupStatus } from "@/util/interfaces/signup.data";
+
+
 
 const strongPasswordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
 

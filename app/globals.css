@@ -15,6 +15,8 @@
   --banner-secondary: #049c75;
   --banner-error-primary: #e22859;
   --banner-error-secondary: #e22859;
+  --banner-info-secondary: #1f64c4;
+  --banner-info-primary: #68cdfe;
 }
 
 @theme inline {
@@ -31,6 +33,8 @@
   --color-banner-secondary: var(--banner-secondary);
   --color-banner-error-primary: var(--banner-error-primary);
   --color-banner-error-secondary: var(--banner-error-secondary);
+  --color-banner-info-primary: var(--baner-info-primary);
+  --color-banner-info-secondary: var(--baner-info-secondary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
@@ -45,6 +49,6 @@
 
 body {
   background: var(--foreground);
-  color: var(--foreground);
+  color: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
