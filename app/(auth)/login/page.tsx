@@ -21,11 +21,15 @@ export default async function SignInPage({
             action={async (formData) => {
               "use server";
               try {
-                await signIn(
+                signIn(
                   "credentials",
                   formData
-                  // redirect("/app", RedirectType.push)
-                );
+                ).then(result => {
+                  const res = result;
+                  console.log(result);
+
+                });
+                
               } catch (error) {
                 if (error instanceof AuthError) {
                   return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);

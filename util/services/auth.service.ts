@@ -2,7 +2,7 @@ import { Knex } from "knex";
 import User from "../models/auth/user";
 import UserPass from "../models/auth/user_pass";
 import { AdapterUser } from "next-auth/adapters";
-import { EncryptPassword } from "../util/helper.function";
+import { EncryptPassword, ValidatePassword } from "../util/helper.function";
 import { email } from "zod";
 
 export class AuthService {
@@ -38,6 +38,15 @@ export class AuthService {
       if (!user_pass) {
         throw new Error("User has no password");
       }
+      const checkPass = await ValidatePassword({ password: password, hash: user_pass?.passwordHash });
+
+      if (!checkPass) {
+        throw new Error("Invalid Password");
+      }
+      UserPass.query().update({
+        lastUsedAt : new Date(Date.now())
+      }).where('userId' , user_pass.userId).transacting(trx);
+
       // Here you would typically check the password hash
       // For simplicity, we assume the password is correct
       trx.commit();
@@ -116,6 +125,7 @@ export class AuthService {
       if (!userPass) {
         throw new Error("Failed to create user password");
       }
+
       await trx.commit();
       return { user };
     } catch (error) {

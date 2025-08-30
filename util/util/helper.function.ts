@@ -7,3 +7,7 @@ export  async function EncryptPassword(password: string): Promise<string> {
     console.log("HASH: ", hash);
   return hash.toString();
 }
+
+export async function ValidatePassword({ password , hash} : { password : string , hash : string }){
+  return await bcrypt.compare(password , hash);
+}

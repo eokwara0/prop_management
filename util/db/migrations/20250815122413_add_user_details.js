@@ -4,6 +4,7 @@
  */
 exports.up = async function (knex) {
   await knex.schema.createTable("user_pass", (table) => {
+        // table.text("id").primary().defaultTo(knex.raw("gen_random_uuid()"))
     table
       .text("userId")
       .notNullable()
