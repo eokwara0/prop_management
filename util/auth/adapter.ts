@@ -1,12 +1,16 @@
-import type { Adapter } from "next-auth/adapters";
+import type { Adapter, AdapterSession } from "next-auth/adapters";
 import { Knex } from "knex";
+import { AuthService } from "../services/auth.service";
+import IUser from "../interfaces/iuser";
+import Session from "../models/auth/session";
+import User from "../models/auth/user";
 
 /**
  * KnexAdapter provides a NextAuth.js-compatible adapter using Knex.js as the data layer.
- * 
+ *
  * @param knex - A configured Knex instance connected to your database.
  * @returns An object implementing the Adapter interface for NextAuth.js.
- * 
+ *
  * This adapter implements CRUD operations for:
  * - Users
  * - Accounts (OAuth/OIDC/Email)
@@ -26,9 +30,48 @@ export function KnexAdapter(knex: Knex): Adapter {
       return newUser;
     },
 
+    async getSessionAndUser(token) {
+      let trx;
+      try {
+        trx = await knex.transaction();
+        const session = await Session.query()
+          .where("sessionToken", token)
+          .first()
+          .transacting(trx);
+        if (!session) {
+          throw new Error("user has no session");
+        }
+
+        const user = await User.query()
+          .where("id", session.userId)
+          .first()
+          .transacting(trx);
+          
+        const roles = await AuthService.getUserActivities({
+          userId: session.userId,
+        });
+
+        trx.commit();
+        return {
+          session: session,
+          user: {
+            ...user,
+            roles: roles,
+          } as IUser,
+        };
+      } catch (error) {
+        trx?.rollback();
+        return null;
+      }
+    },
     /** Returns a user by their ID. */
     async getUser(id) {
-      return knex("user").where({ id }).first();
+      const user = await knex("user").where({ id }).first();
+      const roles = await AuthService.getUserActivities({ userId: id });
+      return {
+        ...user,
+        roles: roles,
+      } as IUser;
     },
 
     /** Returns a user by their email. */
@@ -47,7 +90,10 @@ export function KnexAdapter(knex: Knex): Adapter {
 
     /** Updates a user's information. */
     async updateUser(user) {
-      const [updated] = await knex("user").where({ id: user.id }).update(user).returning("*");
+      const [updated] = await knex("user")
+        .where({ id: user.id })
+        .update(user)
+        .returning("*");
       return updated;
     },
 
@@ -86,14 +132,6 @@ export function KnexAdapter(knex: Knex): Adapter {
       return newSession;
     },
 
-    /** Retrieves a session and its associated user. */
-    async getSessionAndUser(sessionToken) {
-      const session = await knex("session").where({ sessionToken }).first();
-      if (!session) return null;
-      const user = await knex("user").where({ id: session.userId }).first();
-      return { session, user };
-    },
-
     /** Updates a session by sessionToken. */
     async updateSession(session) {
       const [updated] = await knex("session")
@@ -114,13 +152,17 @@ export function KnexAdapter(knex: Knex): Adapter {
 
     /** Creates a verification token. */
     async createVerificationToken(token) {
-      const [newToken] = await knex("verificationToken").insert(token).returning("*");
+      const [newToken] = await knex("verificationToken")
+        .insert(token)
+        .returning("*");
       return newToken;
     },
 
     /** Uses a verification token and deletes it from the database. */
     async useVerificationToken({ identifier, token }) {
-      const vt = await knex("verificationToken").where({ identifier, token }).first();
+      const vt = await knex("verificationToken")
+        .where({ identifier, token })
+        .first();
       if (!vt) return null;
       await knex("verificationToken").where({ identifier, token }).del();
       return vt;
@@ -137,7 +179,9 @@ export function KnexAdapter(knex: Knex): Adapter {
 
     /** Creates a new WebAuthn authenticator. */
     async createAuthenticator(authenticator) {
-      const [newAuth] = await knex("authenticator").insert(authenticator).returning("*");
+      const [newAuth] = await knex("authenticator")
+        .insert(authenticator)
+        .returning("*");
       return newAuth;
     },
 

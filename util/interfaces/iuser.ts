@@ -1,5 +1,6 @@
 import { AdapterUser } from "@auth/core/adapters";
 import { Model } from "objection";
+import Role from "../models/auth/role";
 
 class IUser  extends Model implements AdapterUser {
   id!: string;
@@ -7,13 +8,8 @@ class IUser  extends Model implements AdapterUser {
   emailVerified!: Date | null;
   name?: string | null | undefined;
   image?: string | null | undefined;
-  roles?: Roles[] | null | undefined;
+  roles?: Role[] | null | undefined;
 }
 
 
-type Roles = {
-   id : string;
-   description : string;
-   name : string;
-};
 export default IUser;

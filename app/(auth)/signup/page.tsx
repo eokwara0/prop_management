@@ -147,7 +147,7 @@ export default function SignUpPage() {
                   {status === SignupStatus.LOADING ? <Loader /> : "Continue"}
                 </button>
                 {/* Login link */}
-                <p className="text-xs text-left text-white flex gap-1">
+                <p className=" text-left text-white flex gap-1">
                   Already have an account?
                   <a href="/login" className="text-button font-light">
                     Login

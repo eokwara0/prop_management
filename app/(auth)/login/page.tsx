@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { signIn, providerMap } from "@/util/auth";
+import { signIn, providerMap, auth } from "@/util/auth";
 import { AuthError } from "next-auth"
 import AppLogo from '@/assets/logo/icon2.png';
 import LoginInfoPage from "@/util/components/authentication/login.info";
@@ -13,24 +13,27 @@ export default async function SignInPage({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+
+
   return (
-    <div className="min-h-screen justify-center items-center content-center flex flex-col gap-2 bg-gradient-to-tr from-l_f_s to-l_f_f">
+    <div className="text-foreground min-h-screen justify-center items-center content-center flex flex-col gap-2 bg-gradient-to-tr from-l_f_s to-l_f_f">
       <div className="justify-center items-center content-center  h-full flex flex-col gap-2 ">
         <div className=" transition-all  duration-75 w-full max-sm:w-full max-sm:h-[auto]  h-[auto] justify-between  flex flex-col rounded-md p-4 gap-3">
           <form
             action={async (formData) => {
               "use server";
               try {
-                signIn(
+                await signIn(
                   "credentials",
-                  formData
-                ).then(result => {
-                  const res = result;
-                  console.log(result);
-
-                });
+                  {
+                    redirectTo : "/app",
+                    email: formData.get("email") as string,
+                    password: formData.get("password") as string,
+                  }
+                );
                 
               } catch (error) {
+                //console.log('Signin error:', error);
                 if (error instanceof AuthError) {
                   return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);
                 }
@@ -68,18 +71,18 @@ export default async function SignInPage({
             <input
               type="submit"
               value="Sign In"
-              className=" align-bottom h-10 p-2 rounded-md  w-full bg-button "
+              className=" hover:scale-[101%] transition-all   align-bottom h-10 p-2 rounded-md  w-full bg-button "
             />
             <div className="text-[0.7rem] flex flex-col  gap mt-3">
               <div className=" w-full flex justify-start text-button">
-                <a href="" className="text-xs">
+                <a href="" className="text-sm">
                   Forgot password ?
                 </a>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 text-[0.9rem]">
                 <p className=" font-extralight">Don&apos;t have an account?</p>{" "}
                 <span>
-                  <a href="/signup" className="border-b-white text-button ">
+                  <a href="/signup" className=" border-b-white text-button ">
                     Sign up
                   </a>
                 </span>
@@ -115,7 +118,7 @@ export default async function SignInPage({
             >
               <button
                 type="submit"
-                className="    w-full bg-white text-slate-600 p-2 rounded-md"
+                className=" hover:scale-[101%]   w-full bg-white text-slate-600 p-2 rounded-md"
               >
                 <span>Sign in with {provider.name}</span>
               </button>

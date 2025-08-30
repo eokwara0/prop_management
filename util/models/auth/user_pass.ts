@@ -4,11 +4,12 @@ import User from "./user";
 
 export default class UserPass extends Model {
   userId!: string;
+  userTypeId! : number;
   passwordHash!: string;
   passwordSalt?: string;
   isActive!: boolean;
-  createdAt!: Date;
-  lastUsedAt?: Date;
+  createdAt!: string;
+  lastUsedAt?: string;
 
   static get tableName() {
     return "user_pass";

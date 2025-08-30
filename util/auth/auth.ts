@@ -5,9 +5,11 @@ import { KnexAdapter } from "./adapter";
 import knex from "./database.init";
 import { Provider } from "next-auth/providers";
 import { AuthService } from "../services/auth.service";
-import { AdapterUser } from "next-auth/adapters";
+import { encode } from "next-auth/jwt";
+import IUser from "../interfaces/iuser";
 
 AuthService.getInstance(knex);
+const adapter = KnexAdapter(knex);
 
 const providers: Provider[] = [
   Credentials({
@@ -25,16 +27,27 @@ const providers: Provider[] = [
     },
     authorize: async (credentials) => {
       try {
-         if (
-        credentials &&
-        typeof credentials.email === "string" &&
-        typeof credentials.password === "string"
-      ) {
-        return await AuthService.login(credentials.email, credentials.password);
-      }
+        if (
+          credentials &&
+          typeof credentials.email === "string" &&
+          typeof credentials.password === "string"
+        ) {
+          const result = await AuthService.login(
+            credentials.email,
+            credentials.password
+          );
+          if (!result) {
+            return null;
+          }
+          return {
+            id: String(result.id),
+            name: result.name,
+            email: result.email,
+          };
+        }
       } catch (error) {
-          return {} as AdapterUser
-        console.log('The error went on!', error);
+        //console.log("Authentication error:", error);
+        return null;
       }
       return null;
     },
@@ -59,14 +72,48 @@ export const providerMap = providers
 export const { auth, handlers, signIn, signOut } = NextAuth({
   trustHost: true,
   debug: true,
-  adapter: KnexAdapter(knex),
+  adapter: adapter,
   providers: providers,
-  callbacks : {
-    
+  callbacks: {
+    async session(params) {
+      //console.log("Session callback session:", params.session);
+
+      if (!params.session.user) {
+        throw new Error("No user in session");
+      }
+      return params.session;
+    },
+  },
+  session: {
+    strategy: "database",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+    updateAge: 24 * 60 * 60, // 24 hours
+  },
+  jwt: {
+    encode: async ({ token, salt, secret }) => {
+      const tk_data = await encode({
+        token: token,
+        salt: salt,
+        secret: secret,
+      });
+
+      if (!tk_data) {
+        throw new Error("Failed to encode JWT token");
+      }
+      const result = await adapter.createSession!({
+        userId: token!.sub!,
+        expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+        sessionToken: tk_data,
+      });
+      if (!result) {
+        throw new Error("Failed to create session");
+      }
+      return result.sessionToken;
+    },
   },
   pages: {
     signIn: "/login",
-    error : "/error"
+    error: "/error",
     // newUser : '/signup/oauth_'
   },
 });

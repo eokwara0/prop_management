@@ -4,6 +4,9 @@ import UserPass from "../models/auth/user_pass";
 import { AdapterUser } from "next-auth/adapters";
 import { EncryptPassword, ValidatePassword } from "../util/helper.function";
 import { email } from "zod";
+import UserTypeActivity from "../models/auth/user_type_activity";
+import IUser from "../interfaces/iuser";
+import Role from "../models/auth/role";
 
 export class AuthService {
   static knex: Knex;
@@ -15,7 +18,7 @@ export class AuthService {
     return new AuthService();
   }
 
-  static async login(email: string, password: string): Promise<AdapterUser> {
+  static async login(email: string, password: string): Promise<IUser> {
     let trx;
     try {
       if (!email || !password) {
@@ -24,7 +27,7 @@ export class AuthService {
       trx = await this.knex.transaction();
 
       const user = await User.query()
-        .where({ email: email })
+        .where({ email: email.toLowerCase() })
         .first()
         .transacting(trx);
 
@@ -38,22 +41,85 @@ export class AuthService {
       if (!user_pass) {
         throw new Error("User has no password");
       }
-      const checkPass = await ValidatePassword({ password: password, hash: user_pass?.passwordHash });
+      const checkPass = await ValidatePassword({
+        password: password,
+        hash: user_pass?.passwordHash,
+      });
 
       if (!checkPass) {
         throw new Error("Invalid Password");
       }
-      UserPass.query().update({
-        lastUsedAt : new Date(Date.now())
-      }).where('userId' , user_pass.userId).transacting(trx);
 
+      const lua = new Date(Date.now()).toISOString();
+      const update = await UserPass.query()
+        .patch({ lastUsedAt: lua })
+        .where("userId", user_pass.userId)
+        .returning("*")
+        .transacting(trx);
+
+      if (!update) {
+        throw new Error("Failed to update last used time");
+      }
+      const user_role_activity = await UserTypeActivity.query()
+        .where("userTypeId", user_pass.userTypeId)
+        .first()
+        .transacting(trx);
+
+      if (!user_role_activity) {
+        throw new Error("No roles assigned to this user");
+      }
+
+      const roles: Role[] = [];
+      for (const roleId of user_role_activity.roleIds) {
+        const role = await Role.query().findById(roleId).transacting(trx);
+        if (role) {
+          roles.push(role);
+        }
+      }
       // Here you would typically check the password hash
       // For simplicity, we assume the password is correct
       trx.commit();
-      return user;
+      return {
+        ...user,
+        roles: roles,
+      } as IUser;
     } catch (error) {
       trx?.rollback();
       throw error;
+    }
+  }
+
+  static async getUserActivities({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<Role[]> {
+    try {
+      const user_pass = await UserPass.query()
+        .where("userId", userId)
+        .first();
+      if (!user_pass) {
+        throw new Error("User does not exist");
+      }
+      
+      const activities = await UserTypeActivity.query()
+        .where("id", user_pass.userTypeId)
+        .first();
+      if(!activities){
+        throw new Error("user has no roles");
+      }
+
+      const roles = await Role.query().where("id", "in", activities.roleIds);
+      
+      if(!roles || roles.length == 0){
+        throw new Error("Invalid user user has no roles");
+      }
+      
+      return roles;
+
+    } catch (error) {
+      console.error(error);
+      return [];
     }
   }
 
@@ -74,7 +140,7 @@ export class AuthService {
       trx = await this.knex.transaction();
 
       const existingUser = await this.knex("user")
-        .where({ email: userData.email })
+        .where({ email: userData.email.toLowerCase() })
         .first()
         .transacting(trx);
       if (existingUser) {
@@ -83,8 +149,8 @@ export class AuthService {
 
       const [user] = await this.knex("user")
         .insert({
-          email: userData.email,
-          name: userData.name,
+          email: userData.email.toLowerCase(),
+          name: userData.name.toLowerCase(),
         })
         .returning("*")
         .transacting(trx);
@@ -97,7 +163,7 @@ export class AuthService {
           userId: user.id,
           provider: "credentials",
           type: "credentials",
-          providerAccountId: userData.email,
+          providerAccountId: userData.email.toLowerCase(),
         })
         .returning("*")
         .transacting(trx);

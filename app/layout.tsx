@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Lexend_Deca } from "next/font/google";
 import "./globals.css";
 import BannerProvider from "@/util/components/context/banner/banner.provider";
+import { isValidUser } from "@/util/util/client.functions";
+import { redirect } from "next/navigation";
 
 const silkScreen = Lexend_Deca({
   subsets: ["latin"],
@@ -13,7 +15,7 @@ export const metadata: Metadata = {
   description: "A platform for managing your home's",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -21,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${silkScreen.className} antialiased`}>
-        <BannerProvider>{children}</BannerProvider>
+        <BannerProvider>
+          {children}
+        </BannerProvider>
       </body>
     </html>
   );
