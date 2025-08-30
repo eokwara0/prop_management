@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { auth } from "../auth";
 
 /**
@@ -7,6 +8,7 @@ import { auth } from "../auth";
 export async function isValidUser() {
   const authdata = await auth();
   console.log(authdata);
+
   if (!authdata) {
     return false;
   }

@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Lexend_Deca } from "next/font/google";
 import "./globals.css";
 import BannerProvider from "@/util/components/context/banner/banner.provider";
-import { isValidUser } from "@/util/util/client.functions";
-import { redirect } from "next/navigation";
 
 const silkScreen = Lexend_Deca({
   subsets: ["latin"],

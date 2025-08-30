@@ -12,6 +12,5 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-    console.log(await isValidUser());
   return <>{await isValidUser() ? redirect("/app") : children}</>;
 }

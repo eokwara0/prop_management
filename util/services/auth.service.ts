@@ -119,7 +119,7 @@ export class AuthService {
 
     } catch (error) {
       console.error(error);
-      return [];
+      throw new Error("Internal server error")
     }
   }
 

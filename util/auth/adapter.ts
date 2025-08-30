@@ -31,27 +31,19 @@ export function KnexAdapter(knex: Knex): Adapter {
     },
 
     async getSessionAndUser(token) {
-      let trx;
       try {
-        trx = await knex.transaction();
         const session = await Session.query()
           .where("sessionToken", token)
-          .first()
-          .transacting(trx);
+          .first();
         if (!session) {
           throw new Error("user has no session");
         }
 
-        const user = await User.query()
-          .where("id", session.userId)
-          .first()
-          .transacting(trx);
-          
+        const user = await User.query().where("id", session.userId).first();
         const roles = await AuthService.getUserActivities({
           userId: session.userId,
         });
 
-        trx.commit();
         return {
           session: session,
           user: {
@@ -60,7 +52,6 @@ export function KnexAdapter(knex: Knex): Adapter {
           } as IUser,
         };
       } catch (error) {
-        trx?.rollback();
         return null;
       }
     },
