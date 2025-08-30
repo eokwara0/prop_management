@@ -1,3 +1,10 @@
+import { AppSidebar } from "@/shadcn/components/app-sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/shadcn/components/ui/sidebar";
+import AppNav from "@/util/components/nav/app.nav";
 import { isValidUser } from "@/util/util/client.functions";
 import { redirect } from "next/navigation";
 
@@ -9,9 +16,18 @@ export default async function AppLayout({
   const data = await isValidUser();
   if (data) {
     return (
-      <main className=" text-white bg-gradient-to-br from-l_f_s to-l_f_f min-h-screen ">
-        {children}
-      </main>
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+           <div className="h-[4vh]">
+            <AppNav/>
+
+           </div>
+           <div className="h-[96vh]">
+            {children}
+           </div>
+        </SidebarInset>
+      </SidebarProvider>
     );
   }
   redirect("/");
