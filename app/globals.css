@@ -1,11 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/* @custom-variant dark (&:is(.dark *)); */
 
 :root {
-  --default-background: #1f1f1f;
-  --secondary-background: #373737;
+  --default-background: #0e0f11;
+  --secondary-background: #36393e;
   --button-color: #06cf9c;
   --button-secondary : #049c75;
   --login-form-color: #212121;
@@ -150,7 +150,7 @@ body {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-background;
+    @apply bg-background text-foreground;
   }
 }
 

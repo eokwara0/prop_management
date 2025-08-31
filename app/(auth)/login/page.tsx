@@ -16,7 +16,7 @@ export default async function SignInPage({
 
 
   return (
-    <div className="text-foreground min-h-screen justify-center items-center content-center flex flex-col gap-2 bg-gradient-to-tr from-l_f_s to-l_f_f">
+    <div className=" min-h-screen justify-center items-center content-center flex flex-col gap-2 bg-gradient-to-tr from-l_f_s to-l_f_f">
       <div className="justify-center items-center content-center  h-full flex flex-col gap-2 ">
         <div className=" transition-all  duration-75 w-full max-sm:w-full max-sm:h-[auto]  h-[auto] justify-between  flex flex-col rounded-md p-4 gap-3">
           <form
