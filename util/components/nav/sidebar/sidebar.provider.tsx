@@ -1,13 +1,17 @@
 "use client";
 import { Button } from "@/shadcn/components/ui/button";
 import { Arrow, Tooltip, TooltipContent, TooltipTrigger } from "@radix-ui/react-tooltip";
-import { ChartBar, Dock, DraftingCompass, Group, Inbox, LayoutDashboard, PanelLeft, Settings, User, Wallet, Wrench } from "lucide-react";
+import { ChartBar, Dock, DraftingCompass, Group, Inbox, LayoutDashboard, LogOut, PanelLeft, Settings, User, Wallet, Wrench } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import { createContext, useContext, useState } from "react"
 import AppLogo from "@/assets/logo/icon2.png";
 import * as motion from "motion/react-client"
 import { AnimatePresence } from "motion/react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { Avatar, AvatarImage } from "@/shadcn/components/ui/avatar";
+import { AvatarFallback } from "@radix-ui/react-avatar";
+import { signOut } from "next-auth/react";
 
 
 
@@ -123,11 +127,6 @@ export function SideBar() {
             icon: ChartBar,
             href: "#"
         },
-        {
-            name: "Settings",
-            icon: Settings,
-            href: "#"
-        }
     ];
 
     return (
@@ -140,8 +139,9 @@ export function SideBar() {
                     transition={{ duration: 0.1 }}
                     style={{ overflow: "hidden" }}
                 >
-                    <div className={` border-r-[1px] border-r-gray-500 flex flex-col justify-start items-center h-[100vh] p-2 transition-all duration-100 bg-gradient-to-br from-l_f_s to-l_f_f w-[${SIDEBAR_WIDTH}]`}>
-                        <SideBarPanel>
+                    <div className={` border-r-[1px] border-r-gray-500 flex flex-col justify-between items-center h-[100vh] p-2 transition-all duration-100 bg-gradient-to-br from-l_f_s to-l_f_f w-[${SIDEBAR_WIDTH}]`}>
+                        <div className="flex flex-col">
+                            <SideBarPanel>
                             <SideBarHeader />
                         </SideBarPanel>
                         <div>
@@ -160,6 +160,34 @@ export function SideBar() {
                                     </Tooltip>
                                 </SideBarPanel>
                             ))}
+                        </div>
+                        </div>
+                        <div>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Settings className="cursor-pointer"/>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent  hideWhenDetached={true} align="end" alignOffset={200} className=" flex flex-col gap-3 p-2 rounded-md border-[0.6px] border-white w-[13rem] bg-gradient-to-br from-l_f_f to-l_f_s" side="right" sideOffset={20} >
+                                    <DropdownMenuLabel className="flex justify-start items-center gap-3">
+                                        <Avatar className="border border-white text-center flex flex-col justify-center items-center">
+                                            <AvatarFallback className="text-center text-xs">EO</AvatarFallback>
+                                        </Avatar>
+                                        <p>Emmanuel</p>
+                                    </DropdownMenuLabel>
+                                    {/* <DropdownMenuGroup className="w-[200px] flex flex-col gap-2">
+                                        <DropdownMenuItem>
+                                            Info
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            Info
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup> */}
+                                    <DropdownMenuItem className="outline-none p-1 rounded cursor-pointer hover:bg-button flex gap-2 justify-start items-center" onClick={() => signOut()}>
+                                        <LogOut width={15} height={15}/>
+                                        Logout
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         </div>
                     </div>
                 </motion.div>
