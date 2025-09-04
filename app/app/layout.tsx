@@ -1,4 +1,5 @@
 import { TooltipProvider } from "@/shadcn/components/ui/tooltip";
+import { BottomNav } from "@/util/components/nav/app.bottom/nav.bottom";
 import { AppHeader } from "@/util/components/nav/app.header/app.header";
 import { SideBar, SideBarInset, SideBarProvider } from "@/util/components/nav/sidebar/sidebar.provider";
 import { isValidUser } from "@/util/util/client.functions";
@@ -18,6 +19,9 @@ export default async function AppLayout({
           <SideBarInset>
             <AppHeader/>
             {children}
+            <BottomNav>
+              
+            </BottomNav>
           </SideBarInset>
         </TooltipProvider>
 

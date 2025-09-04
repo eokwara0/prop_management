@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Lexend_Deca } from "next/font/google";
 import "./globals.css";
 import BannerProvider from "@/util/components/context/banner/banner.provider";
+import { SessionProvider } from "next-auth/react";
 
 const silkScreen = Lexend_Deca({
   subsets: ["latin"],
@@ -21,9 +22,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${silkScreen.className} antialiased`}>
-        <BannerProvider>
-          {children}
-        </BannerProvider>
+        <SessionProvider>
+          <BannerProvider>{children}</BannerProvider>
+        </SessionProvider>
       </body>
     </html>
   );

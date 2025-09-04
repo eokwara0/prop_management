@@ -6,7 +6,6 @@ import knex from "./database.init";
 import { Provider } from "next-auth/providers";
 import { AuthService } from "../services/auth.service";
 import { encode } from "next-auth/jwt";
-import IUser from "../interfaces/iuser";
 
 AuthService.getInstance(knex);
 const adapter = KnexAdapter(knex);
@@ -71,7 +70,7 @@ export const providerMap = providers
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   trustHost: true,
-  debug: true,
+  debug: false,
   adapter: adapter,
   providers: providers,
   callbacks: {

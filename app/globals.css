@@ -4,6 +4,7 @@
 /* @custom-variant dark (&:is(.dark *)); */
 
 :root {
+  --border-color: #ffffff52;
   --default-background: #0e0f11;
   --secondary-background: #36393e;
   --button-color: #06cf9c;
@@ -11,6 +12,7 @@
   --login-form-color: #212121;
   --login-form-secondary: #1a1d21;
   --login-form-first: #1e2122;
+  --l-c: #dddfe2;
   /* --banner-primary:#00e5ff; */
   --banner-primary:#06cf9c;
   --banner-secondary: #049c75;
@@ -53,6 +55,8 @@
 }
 
 @theme inline {
+  --color-bc: var(--border-color);
+  --color-l-c: var(--l-c);
   --color-d-background : var(--default-background);
   --color-s-background : var(--secondary-background);
   --color-background: var(--background);
