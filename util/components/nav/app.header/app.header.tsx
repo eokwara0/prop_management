@@ -1,5 +1,6 @@
 import { Badge } from "@/shadcn/components/ui/badge";
 import { SideBarTrigger } from "../sidebar/sidebar.provider";
+import { Search } from "lucide-react";
 
 export function AppHeader() {
   return (
@@ -16,12 +17,16 @@ export function AppHeader() {
       <div>
         <div>
           <form action="">
-            <input 
+            <label htmlFor="search" className="flex h-7 px-2 items-center gap border-2 border-slate-300 rounded-md">
+                <Search size={17} className="cursor-pointer"/>
+                <input 
               type="text" 
               name="search"
               id="search"
               placeholder="Search for data" 
-              className="bg-slate border border-bc w-fit h-[1.8rem] p-2 rounded-full" />
+              className="bg-slate w-fit  p-2 rounded-md outline-none" />
+            </label>
+            
           </form>
         </div>
       </div>

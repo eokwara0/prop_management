@@ -13,6 +13,7 @@ import {
   Inbox,
   LogOut,
   LucideLayoutDashboard,
+  LucideProps,
   PanelLeft,
   Settings,
   User,
@@ -20,7 +21,7 @@ import {
   Wrench,
 } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useCallback } from "react";
 import { createContext, useContext, useState } from "react";
 import AppLogo from "@/assets/logo/icon2.png";
 import * as motion from "motion/react-client";
@@ -38,6 +39,7 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import Session from "@/util/models/auth/session";
 import IUser from "@/util/interfaces/iuser";
+import { SideBarData } from "./sidebar.data";
 
 const SIDEBAR_WIDTH = "3rem";
 
@@ -88,15 +90,15 @@ export function SideBarTrigger() {
 
   return (
     <div>
-      <Tooltip delayDuration={0}>
-        <TooltipTrigger asChild className="p-2">
-          <Button onClick={() => toggleSideBar()} className="w-fit h-fit">
-            <PanelLeft />
-          </Button>
+      <Tooltip delayDuration={0} >
+        <TooltipTrigger asChild className="p-2 cursor-pointer">
+            <div className="h-6 flex justify-center items-center hover:bg-l-c bg-button rounded">
+            <PanelLeft size={15} onClick={toggleSideBar} />
+            </div>
         </TooltipTrigger>
-        <TooltipContent sideOffset={20}>
+        <TooltipContent sideOffset={20} align={"start"}>
           <Arrow />
-          <p className=" rounded-md text-xs bg-black px-2 py-1 w-fit h-fit">
+          <p className=" rounded-md text-xs bg-button px-2 py-1 w-fit h-fit">
             Close panel
           </p>
         </TooltipContent>
@@ -105,55 +107,34 @@ export function SideBarTrigger() {
   );
 }
 
+export type SideBarDataType = {
+    name : string
+    icon : React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
+    href : string
+    active: boolean
+}
+
 export function SideBar() {
   const { open } = useSideBarContext();
   const { data: session } = useSession();
-  console.log(session);
-  const user = session?.user as IUser;
-  console.log(user);
+  const [data , setData] = useState<SideBarDataType[]>(SideBarData)
 
-  const data = [
-    {
-      name: "Dashboard",
-      icon: LucideLayoutDashboard,
-      href: "/app",
-    },
-    {
-      name: "Properties",
-      icon: Inbox,
-      href: "/app/properties",
-    },
-    {
-      name: "Units",
-      icon: DraftingCompass,
-      href: "/app/units",
-    },
-    {
-      name: "Tenants",
-      icon: User,
-      href: "/app/tenants",
-    },
-    {
-      name: "Leases",
-      icon: Dock,
-      href: "/app/leases",
-    },
-    {
-      name: "Payments",
-      icon: Wallet,
-      href: "/app/payments",
-    },
-    {
-      name: "Maintenance",
-      icon: Wrench,
-      href: "/app/maintenance",
-    },
-    {
-      name: "Reports",
-      icon: ChartBar,
-      href: "/app/reports",
-    },
-  ];
+  const onSideClick = useCallback((sidebarcontext : SideBarDataType) => {
+
+    console.log(sidebarcontext);
+    console.log(data)
+    setData( data.map((c ) => {
+        if(c.name === sidebarcontext.name){
+            return sidebarcontext
+        }
+        return  {
+            ...c,
+            active : false
+        };
+    }));
+  },[ data ])
+
+  
 
   return (
     <AnimatePresence>
@@ -174,14 +155,20 @@ export function SideBar() {
               </SideBarPanel>
               <div>
                 {data.map((da) => (
-                  <SideBarPanel key={da.name}>
+                  <SideBarPanel key={da.name} active={da.active}>
                     <Tooltip>
                       <TooltipTrigger>
                         {
-                          <Link href={da.href}>
+                          <Link
+                            className={`cursor-pointer`}
+                           href={da.href} onClick={() => onSideClick( {
+                            ...da,
+                            active : true,
+                            
+                          })} 
+                          >
                             <da.icon
                               size={"1.3rem"}
-                              className="cursor-pointer"
                             />
                           </Link>
                         }
@@ -212,17 +199,6 @@ export function SideBar() {
                   side="right"
                   sideOffset={20}
                 >
-                  {/* <DropdownMenuLabel className="flex justify-start items-center gap-3">
-                    <Avatar className="bg-l_f_f  border border-bc text-center flex flex-col justify-center items-center">
-                      <AvatarFallback className="text-center text-xs">
-                        {!user ? "FU" : user.name![0].toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="text-xs">{!user ? "" : user.name![0].toUpperCase() + user.name?.slice(1)}</p>
-                      <p className="text-xs">Admin</p>
-                    </div>
-                  </DropdownMenuLabel> */}
                   <DropdownMenuItem
                     className="outline-none p-1 text-[1rem] rounded cursor-pointer hover:bg-button flex gap-2 justify-start items-center"
                     onClick={() => signOut()}
@@ -243,14 +219,16 @@ export function SideBar() {
 export function SideBarPanel({
   children,
   className,
+  active = false
 }: {
   children: React.ReactNode;
   className?: string;
+  active? : boolean ;
 }) {
   return (
     <>
       <div
-        className={` rounded-md p-2 hover:bg-d-background w-[40px] flex justify-center items-center ${className}`}
+        className={` rounded-md p-2 ${active ? "bg-button" : "hover:bg-d-background"} w-[40px] flex justify-center items-center ${className}`}
       >
         {children}
       </div>

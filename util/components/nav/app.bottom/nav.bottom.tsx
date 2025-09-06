@@ -1,12 +1,13 @@
 "use client";
 import React from "react";
 import { IoNotifications } from "react-icons/io5";
+import { Notification } from "../notification/notification";
 
 export function BottomNav() {
   return <div className="w-full h-[2.3svh] bg-gradient-to-r from-l_f_f to-l_f_s border-t border-t-bc">
     <BottomNavSection>
             <div className="size-4 cursor-pointer flex justify-center items-center hover:bg-slate-400 rounded-full">
-                <IoNotifications size={14}/>
+              <Notification/>
             </div>
     </BottomNavSection>
   </div>;

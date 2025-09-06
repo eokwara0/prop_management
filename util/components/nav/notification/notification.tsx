@@ -1,61 +1,46 @@
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "@/shadcn/components/ui/dropdown-menu";
-import { BellRing } from "lucide-react";
+import { Accordion, AccordionContent } from "@/shadcn/components/ui/accordion";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/shadcn/components/ui/dropdown-menu";
+import { AccordionItem, AccordionTrigger } from "@radix-ui/react-accordion";
+import { Album, Angry } from "lucide-react";
+import { IoNotifications } from "react-icons/io5";
 
 
 export function Notification() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-            <BellRing size={20}/>
+        <IoNotifications size={14}/>
+            
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            Profile
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Billing
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Settings
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            Keyboard shortcuts
-            <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>Team</DropdownMenuItem>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                <DropdownMenuItem>Email</DropdownMenuItem>
-                <DropdownMenuItem>Message</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>More...</DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
-          <DropdownMenuItem>
-            New Team
-            <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>GitHub</DropdownMenuItem>
-        <DropdownMenuItem>Support</DropdownMenuItem>
-        <DropdownMenuItem disabled>API</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          Log out
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-        </DropdownMenuItem>
+      <DropdownMenuContent className=" bg-gradient-to-r from-l_f_f to-l_f_s  w-96 overflow-auto" align="start" sideOffset={10}>
+          <Accordion
+      type="single"
+      collapsible
+      className="w-full bg-transparent text-white"
+      defaultValue="item-1"
+    >
+      <AccordionItem value="item-1">
+        <AccordionTrigger className="border-b flex items-center gap-1 border-b-white w-full text-left p-2">
+            <IoNotifications size={18}/>
+            <p>Notifications</p>
+          </AccordionTrigger>
+
+        <AccordionContent className="rounded hover:bg-slate-300 hover:text-black p-2  w-full flex  gap-2 items-center text-balance">
+          
+            <Angry size={15}/>
+          <p>
+            Mbusiso Sent a message
+          </p>
+        </AccordionContent>
+        <AccordionContent className="rounded hover:bg-slate-300 hover:text-black p-2 w-full flex  gap-2 items-center text-balance">
+          <Album size={15}/>
+          <p>
+            Properties updated.
+          </p>
+         
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
       </DropdownMenuContent>
     </DropdownMenu>
   )
