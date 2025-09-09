@@ -228,7 +228,7 @@ export function SideBarPanel({
   return (
     <>
       <div
-        className={` rounded-md p-2 ${active ? "bg-button" : "hover:bg-d-background"} w-[40px] flex justify-center items-center ${className}`}
+        className={` rounded-md p-2 ${active ? "bg-button" : "hover:bg-d-background"} w-fit flex justify-center items-center ${className}`}
       >
         {children}
       </div>
