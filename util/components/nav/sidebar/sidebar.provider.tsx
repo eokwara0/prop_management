@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/shadcn/components/ui/button";
 import {
   Arrow,
   Tooltip,
@@ -7,21 +6,13 @@ import {
   TooltipTrigger,
 } from "@radix-ui/react-tooltip";
 import {
-  ChartBar,
-  Dock,
-  DraftingCompass,
-  Inbox,
   LogOut,
-  LucideLayoutDashboard,
   LucideProps,
   PanelLeft,
   Settings,
-  User,
-  Wallet,
-  Wrench,
 } from "lucide-react";
 import Image from "next/image";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { createContext, useContext, useState } from "react";
 import AppLogo from "@/assets/logo/icon2.png";
 import * as motion from "motion/react-client";
@@ -30,15 +21,10 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
-import { Avatar } from "@/shadcn/components/ui/avatar";
-import { AvatarFallback } from "@radix-ui/react-avatar";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import Session from "@/util/models/auth/session";
-import IUser from "@/util/interfaces/iuser";
 import { SideBarData } from "./sidebar.data";
 
 const SIDEBAR_WIDTH = "3rem";
@@ -116,25 +102,46 @@ export type SideBarDataType = {
 
 export function SideBar() {
   const { open } = useSideBarContext();
-  const { data: session } = useSession();
-  const [data , setData] = useState<SideBarDataType[]>(SideBarData)
+  const [data, setData] = useState<SideBarDataType[]>(SideBarData);
 
-  const onSideClick = useCallback((sidebarcontext : SideBarDataType) => {
-
-    console.log(sidebarcontext);
-    console.log(data)
-    setData( data.map((c ) => {
-        if(c.name === sidebarcontext.name){
-            return sidebarcontext
-        }
-        return  {
+  const onSideClick = useCallback(
+    (sidebarcontext: SideBarDataType) => {
+      console.log(sidebarcontext);
+      console.log(data);
+      setData(
+        data.map((c) => {
+          if (c.name === sidebarcontext.name) {
+            localStorage.setItem("side-bar", JSON.stringify(sidebarcontext));
+            return sidebarcontext;
+          }
+          return {
             ...c,
-            active : false
-        };
-    }));
-  },[ data ])
+            active: false,
+          };
+        })
+      );
+    },
+    [data]
+  );
 
-  
+  useEffect(() => {
+    const savedData = localStorage.getItem("side-bar");
+    console.log(savedData);
+    if (savedData) {
+      const op = JSON.parse(savedData) as SideBarDataType;
+      setData(
+        data.map((x) => {
+          if (x.name === op.name) {
+            return {
+              ...x,
+              active: true,
+            };
+          }
+          return x;
+        })
+      );
+    }
+  }, []);
 
   return (
     <AnimatePresence>
@@ -161,15 +168,15 @@ export function SideBar() {
                         {
                           <Link
                             className={`cursor-pointer`}
-                           href={da.href} onClick={() => onSideClick( {
-                            ...da,
-                            active : true,
-                            
-                          })} 
+                            href={da.href}
+                            onClick={() =>
+                              onSideClick({
+                                ...da,
+                                active: true,
+                              })
+                            }
                           >
-                            <da.icon
-                              size={"1.3rem"}
-                            />
+                            <da.icon size={"1.3rem"} />
                           </Link>
                         }
                       </TooltipTrigger>

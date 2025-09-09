@@ -12,7 +12,7 @@ export function Notification() {
         <IoNotifications size={14}/>
             
       </DropdownMenuTrigger>
-      <DropdownMenuContent className=" bg-gradient-to-r from-l_f_f to-l_f_s  w-96 overflow-auto" align="start" sideOffset={10}>
+      <DropdownMenuContent className=" w-[18em] bg-gradient-to-r from-l_f_f to-l_f_s  overflow-auto" align="start" sideOffset={10}>
           <Accordion
       type="single"
       collapsible
