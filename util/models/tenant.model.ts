@@ -10,6 +10,20 @@ class Tenant extends BaseModel {
     return "id";
   }
 
+  static get jsonSchema() {
+    return {
+      type: "object",
+      required: ["userId"],
+      properties: {
+        id: { type: "string", format: "uuid" },
+        userId: { type: "string", format: "uuid" },
+        emergencyContact: { type: "string" },
+        employmentStatus: { type: "string" },
+        createdAt: { type: "string", format: "date-time" },
+      },
+    };
+  }
+  
   static get relationMappings() {
     return {
       leases: {

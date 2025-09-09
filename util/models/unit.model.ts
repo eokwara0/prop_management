@@ -11,6 +11,21 @@ class Unit extends BaseModel {
     return "id";
   }
 
+   static get jsonSchema() {
+    return {
+      type: "object",
+      required: ["propertyId", "unitNumber", "rentAmount"],
+      properties: {
+        id: { type: "string", format: "uuid" },
+        propertyId: { type: "string", format: "uuid" },
+        unitNumber: { type: "string", minLength: 1 },
+        rentAmount: { type: "number", minimum: 0 },
+        status: { enum: ["vacant", "occupied", "maintenance"] },
+        createdAt: { type: "string", format: "date-time" },
+      },
+    };
+  }
+
   static get relationMappings() {
     return {
       property: {
