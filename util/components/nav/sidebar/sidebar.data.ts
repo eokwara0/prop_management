@@ -1,10 +1,10 @@
-import { LucideLayoutDashboard, Inbox, DraftingCompass, User, Dock, Wallet, Wrench, ChartBar } from "lucide-react";
+import { LucideLayoutDashboard, Inbox, DraftingCompass, User, Dock, Wallet, Wrench, ChartBar, Box } from "lucide-react";
 import { SideBarDataType } from "./sidebar.provider";
 
 const data : SideBarDataType[]= [
     {
       name: "Dashboard",
-      icon: LucideLayoutDashboard,
+      icon: Box,
       href: "/app",
       active: false,
     },

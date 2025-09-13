@@ -13,19 +13,22 @@ export default async function AppLayout({
   const data = await isValidUser();
   if (data) {
     return (
-      <SideBarProvider>
-        <TooltipProvider delayDuration={0} data-slot="tooltip-provider">
-          <SideBar />
-          <SideBarInset>
-            <AppHeader/>
-            {children}
-            <BottomNav>
-              
-            </BottomNav>
-          </SideBarInset>
-        </TooltipProvider>
+      <div className="min-h-dvh">
+        <SideBarProvider>
+          <TooltipProvider delayDuration={0} data-slot="tooltip-provider">
+            <SideBar />
+            <SideBarInset>
+              <AppHeader />
+              <div className="h-[94.5%]">
+              {children}
+              </div>
+              <BottomNav>
+              </BottomNav>
+            </SideBarInset>
+          </TooltipProvider>
+        </SideBarProvider>
+      </div>
 
-      </SideBarProvider>
     );
   }
   redirect("/");

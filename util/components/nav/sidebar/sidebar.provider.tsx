@@ -15,8 +15,6 @@ import Image from "next/image";
 import React, { useCallback, useEffect } from "react";
 import { createContext, useContext, useState } from "react";
 import AppLogo from "@/assets/logo/icon2.png";
-import * as motion from "motion/react-client";
-import { AnimatePresence } from "motion/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,6 +24,7 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { SideBarData } from "./sidebar.data";
+import { AnimatePresence, motion } from "framer-motion";
 
 const SIDEBAR_WIDTH = "3rem";
 
@@ -66,7 +65,7 @@ export function SideBarProvider({
   }, [open, toggle, setOpen]);
   return (
     <SideBarContext.Provider value={contextValue} {...props}>
-      <div className={`flex  min-h-svh ${className}`}>{children}</div>
+      <div className={`flex  min-h-full ${className}`}>{children}</div>
     </SideBarContext.Provider>
   );
 }
@@ -75,11 +74,11 @@ export function SideBarTrigger() {
   const { toggleSideBar } = useSideBarContext();
 
   return (
-    <div>
+    <div onClick={toggleSideBar}>
       <Tooltip delayDuration={0} >
-        <TooltipTrigger asChild className="p-2 cursor-pointer">
+        <TooltipTrigger asChild className="p-1 cursor-pointer">
             <div className="h-6 flex justify-center items-center hover:bg-l-c bg-button rounded">
-            <PanelLeft size={15} onClick={toggleSideBar} />
+            <PanelLeft size={15}  />
             </div>
         </TooltipTrigger>
         <TooltipContent sideOffset={20} align={"start"}>
@@ -106,8 +105,6 @@ export function SideBar() {
 
   const onSideClick = useCallback(
     (sidebarcontext: SideBarDataType) => {
-      console.log(sidebarcontext);
-      console.log(data);
       setData(
         data.map((c) => {
           if (c.name === sidebarcontext.name) {
@@ -154,13 +151,13 @@ export function SideBar() {
           style={{ overflow: "hidden" }}
         >
           <div
-            className={` border-r-[1px] border-r-gray-500 flex flex-col justify-between items-center h-[100vh] p-2 transition-all duration-100 bg-gradient-to-br from-l_f_s to-l_f_f w-[${SIDEBAR_WIDTH}]`}
+            className={` border-r-[1px] border-r-gray-500 flex flex-col justify-between items-center min-h-svh transition-all duration-100 bg-gradient-to-br from-l_f_s to-l_f_f w-[${SIDEBAR_WIDTH}]`}
           >
-            <div className="flex flex-col">
+            <div className="flex flex-col items-center">
               <SideBarPanel>
                 <SideBarHeader />
               </SideBarPanel>
-              <div>
+              <div className="flex flex-col gap-2">
                 {data.map((da) => (
                   <SideBarPanel key={da.name} active={da.active}>
                     <Tooltip>
@@ -235,7 +232,7 @@ export function SideBarPanel({
   return (
     <>
       <div
-        className={` rounded-md p-2 ${active ? "bg-button" : "hover:bg-d-background"} w-[40px] flex justify-center items-center ${className}`}
+        className={` rounded-md p-1 ${active ? "bg-button" : "hover:bg-d-background"} w-fit flex justify-center items-center ${className}`}
       >
         {children}
       </div>
@@ -254,7 +251,7 @@ export function SideBarHeader() {
 export function SideBarInset({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <div className="w-full min-h-full">{children}</div>
+      <div className="w-full min-h-svh">{children}</div>
     </>
   );
 }

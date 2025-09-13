@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { signIn, providerMap, auth } from "@/util/auth";
+import { signIn, providerMap } from "@/util/auth";
 import { AuthError } from "next-auth"
 import AppLogo from '@/assets/logo/icon2.png';
 import LoginInfoPage from "@/util/components/authentication/login.info";
