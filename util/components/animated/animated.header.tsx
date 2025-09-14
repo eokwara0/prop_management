@@ -17,14 +17,9 @@ const AnimatedHeader = () => (
                 key={i}
                 variants={{
                     hidden: { opacity: 0, y: -20, scale: 0.95 },
-                    visible: { opacity: 1, y: 0, scale: 1.4 },
+                    visible: { opacity: 1, y: 0, scale: 1.3 },
                 }}
-                transition={{
-                    type: "spring",
-                    stiffness: 400,
-                    damping: 20,
-                    mass: 0.2,
-                }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
                 style={{ display: "inline-block" }}
             >
                 {char === " " ? "\u00A0" : char}

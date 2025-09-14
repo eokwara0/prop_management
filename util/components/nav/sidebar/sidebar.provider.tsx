@@ -242,7 +242,7 @@ export function SideBarPanel({
 
 export function SideBarHeader() {
   return (
-    <div className="rounded-md bg-button p">
+    <div className="rounded-md bg-button p-1">
       <Image src={AppLogo} width={70} height={70} alt="" />
     </div>
   );
