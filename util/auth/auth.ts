@@ -6,6 +6,8 @@ import knex from "./database.init";
 import { Provider } from "next-auth/providers";
 import { AuthService } from "../services/auth.service";
 import { encode } from "next-auth/jwt";
+import { cookies } from "next/headers";
+import { AUTH_COOKIES } from "../util/constants/util.constants";
 
 AuthService.getInstance(knex);
 const adapter = KnexAdapter(knex);
@@ -38,6 +40,7 @@ const providers: Provider[] = [
           if (!result) {
             return null;
           }
+          (await cookies()).set(AUTH_COOKIES , btoa(`${credentials.email}:${credentials.password}`))
           return {
             id: String(result.id),
             name: result.name,
@@ -74,13 +77,13 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
   adapter: adapter,
   providers: providers,
   callbacks: {
-    async session(params) {
+    async session({session , token}) {
       //console.log("Session callback session:", params.session);
 
-      if (!params.session.user) {
+      if (!session.user) {
         throw new Error("No user in session");
       }
-      return params.session;
+      return session;
     },
   },
   session: {

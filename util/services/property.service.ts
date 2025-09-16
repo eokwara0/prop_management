@@ -22,9 +22,9 @@ import { Property } from "../models/property.model";
  * adapt behavior if you prefer exceptions to bubble up.
  */
 class PropertyService {
-  static async getAllProperties(): Promise<Property[] | undefined> {
+  static async getAllProperties(userId : string ): Promise<Property[] | undefined> {
     try {
-      const data = await Property.query();
+      const data = await Property.query().where("ownerId" , userId).withGraphFetched("[unit]");
       return data;
     } catch (error) {
       console.log(error);

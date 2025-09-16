@@ -21,7 +21,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
-import { signOut, useSession } from "next-auth/react";
+import { getSession, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { SideBarData } from "./sidebar.data";
 import { AnimatePresence, motion } from "framer-motion";
@@ -151,7 +151,7 @@ export function SideBar() {
           style={{ overflow: "hidden" }}
         >
           <div
-            className={` border-r-[1px] border-r-gray-500 flex flex-col justify-between items-center min-h-svh transition-all duration-100 bg-gradient-to-br from-l_f_s to-l_f_f w-[${SIDEBAR_WIDTH}]`}
+            className={` border-r-[1px] border-r-gray-500 flex flex-col justify-between items-center min-h-screen transition-all duration-100 bg-gradient-to-br from-l_f_s to-l_f_f w-[${SIDEBAR_WIDTH}]`}
           >
             <div className="flex flex-col items-center">
               <SideBarPanel>

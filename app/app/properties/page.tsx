@@ -7,7 +7,7 @@ export default function Properties() {
              <div className="min-h-full w-full flex flex-col items-center  bg-gradient-to-r from-l_f_f to-l_f_s min-md:px-10">
             <div className="h-10"></div>
             <div className="flex flex-col justify-start w-full p-2 gap-3">
-                <div className="flex justify-between">
+                <div className="flex justify-between max-sm:flex-col max-sm:gap-3">
                     <AnimatedHeader />
                     <Button className=" cursor-pointer bg-gradient-to-tr from-button to-emerald-600 text-xs backdrop-blur-lg border border-slate-50">Add Property</Button>
                 </div>
@@ -17,7 +17,7 @@ export default function Properties() {
             </div>
             <div className="  max-md:grid  min-md:flex  max-md:grid-cols-1 gap-4 w-full p-2">
                 {
-                    ...[1, 2, 3, 4].map(x => <div className="text-center flex justify-center items-center w-full rounded-lg backdrop-blur-lg bg-gradient-to-tr from-button to-emerald-600  h-60">
+                    ...[1,2,3,4,5].map(x => <div className="text-center flex justify-center items-center w-full rounded-lg backdrop-blur-lg bg-gradient-to-tr from-button to-emerald-600  h-60">
                         {x}
                     </div>)
                 }
