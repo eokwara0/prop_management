@@ -198,8 +198,8 @@ export function SideBar() {
                 <DropdownMenuContent
                   hideWhenDetached={true}
                   align="end"
-                  alignOffset={200}
-                  className=" flex flex-col gap-3 p-2 rounded-md w-48   shadow border-2 border-bc  backdrop-blur-2xl blur-in-2xl bg-gradient-to-r from-l_f_f to-l_f_s opacity-90 "
+                  alignOffset={2}
+                  className=" flex flex-col gap-3 p-1 rounded-md w-48   #shadow border-2 border-bc backdrop-blur-xs bg-gradient-to-r from-pp-s to-pp-s"
                   side="right"
                   sideOffset={20}
                 >

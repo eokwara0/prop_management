@@ -1,10 +1,15 @@
 'use client'
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
+import { useTransition } from "react";
 
 
-const AnimatedHeader = () => (
+const AnimatedHeader = () => {
+    const t = useTranslations("Property");
+
+    return (
     <motion.h1
-        className="text-2xl flex gap-1"
+        className=" text-wrap flex-wrap text-[1.8em] font-extrabold tracking-tighter flex gap-1"
         initial="hidden"
         animate="visible"
         variants={{
@@ -12,12 +17,12 @@ const AnimatedHeader = () => (
             hidden: {},
         }}
     >
-        {"Properties Management".split("").map((char, i) => (
+        {t("title").split("").map((char, i) => (
             <motion.span
                 key={i}
                 variants={{
                     hidden: { opacity: 0, y: -20, scale: 0.95 },
-                    visible: { opacity: 1, y: 0, scale: 1.3 },
+                    visible: { opacity: 1, y: 0, scale: 1 },
                 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
                 style={{ display: "inline-block" }}
@@ -26,6 +31,6 @@ const AnimatedHeader = () => (
             </motion.span>
         ))}
     </motion.h1>
-);
+)};
 
 export { AnimatedHeader };

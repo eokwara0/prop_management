@@ -38,7 +38,6 @@ exports.up = async function (knex) {
     table
       .text("userId")
       .notNullable()
-      .unique()
       .references("id")
       .inTable("user")
       .onDelete("CASCADE"); // each tenant is linked to a user

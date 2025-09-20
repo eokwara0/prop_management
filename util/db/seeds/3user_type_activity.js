@@ -5,9 +5,15 @@
 exports.seed = async function (knex) {
   await knex("user_type_activity").del();
 
+
+  // Get the role mapping
+  const data = await knex("user_type").select("id" , "name");
+
   // Get all role IDs by name
   const roles = await knex("role").select("id", "name");
   const roleMap = Object.fromEntries(roles.map(r => [r.name, r.id]));
+
+  console.log(data , roles , roleMap);
 
   await knex("user_type_activity").insert([
     // Admin gets everything

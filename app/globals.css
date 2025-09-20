@@ -4,6 +4,9 @@
 /* @custom-variant dark (&:is(.dark *)); */
 
 :root {
+  --dialog-color: #1c1c1e;
+  --primary-p-color: #36f8050c;
+  --secondary-p-color: #05dcf809;
   --border-color: #ffffff52;
   --default-background: #0e0f11;
   --secondary-background: #36393e;
@@ -55,6 +58,9 @@
 }
 
 @theme inline {
+  --color-dialog-color: var(--dialog-color);
+  --color-pp-c: var(--primary-p-color);
+  --color-pp-s: var(--secondary-p-color);
   --color-bc: var(--border-color);
   --color-l-c: var(--l-c);
   --color-d-background : var(--default-background);

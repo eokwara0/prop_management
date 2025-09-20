@@ -1,10 +1,6 @@
 'use client'
-
 import * as React from 'react'
-
-import { motion, useTransform, AnimatePresence, useMotionValue, useSpring } from 'motion/react'
-import { Avatar, AvatarFallback, AvatarImage } from '@/shadcn/components/ui/avatar'
-import { LucideIcon } from 'lucide-react'
+import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 
 
 interface TooltipItem {
