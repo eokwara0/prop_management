@@ -1,4 +1,26 @@
+## Project Setup Guide
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+
+## Prerequisites
+-  ### Install PostgreSQL
+    
+    - Download and install PostgreSQL from the offical site : [site](http://www.postgresql.org/download/)
+-  ### Create a Database
+    - After installing PostgreSQL, create a new database named <code>t_db</code>
+
+    - The password of the database should match the one inside of the <code>.env.local</code> or <code>.env</code>
+- ### Run migration file
+    ```bash
+    # run the latest migration files
+        npm run lst 
+    # run the latest seed files
+        npm run seed 
+    # run the dev server
+        npm run dev
+    ```
+
+- ### You will be directed to the login page where you can either login or go to the signup page to create a new user
 
 ## Getting Started
 
@@ -26,6 +48,11 @@ To learn more about Next.js, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Objection.js Documentation [https://vincit.github.io/objection.js/](https://vincit.github.io/objection.js/)
+ – learn about the ORM used for database models.
+
+- Knex.js Documentation [https://knexjs.org/](https://knexjs.org/)
+ – query builder & migrations guide.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
