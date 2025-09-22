@@ -27,7 +27,7 @@ export default async function AppLayout({
               <SideBar />
               <SideBarInset>
                 <AppHeader />
-                <div className=" h-[94.5%] max-md:h-[100%] overflow-y-auto scrollbar-hidden">{children}</div>
+                <div className=" h-[94.5%] max-md:min-h-[100%] overflow-y-auto scrollbar-hidden">{children}</div>
                 <BottomNav></BottomNav>
               </SideBarInset>
             </TooltipProvider>

@@ -9,7 +9,7 @@ const AnimatedHeader = () => {
 
     return (
     <motion.h1
-        className=" text-wrap flex-wrap text-[1.8em] font-extrabold tracking-tighter flex gap-1"
+        className=" text-wrap flex-wrap text-[150%] font-extrabold tracking-tighter flex gap-1"
         initial="hidden"
         animate="visible"
         variants={{

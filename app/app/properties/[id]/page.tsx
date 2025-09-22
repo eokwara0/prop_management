@@ -10,9 +10,7 @@ export default async function Properties() {
     <div className=" min-h-full w-full flex flex-col items-center  bg-gradient-to-r from-l_f_f to-l_f_s min-md:px-10">
       <div className="h-10"></div>
       <div className="flex flex-col justify-start w-full p-2 gap-3">
-        
         <div className="flex justify-between max-sm:flex-col max-sm:gap-3 max-sm:justify-start">
-          
           <AnimatedHeader />
           <DialogComponent>
             <div className=" p-2 rounded-md w-full cursor-pointer bg-button py-2 px-5  shadow-md shadow-black  inset-shadow-2xs inset-shadow-accent/50 text-xs">
@@ -20,7 +18,7 @@ export default async function Properties() {
             </div>
           </DialogComponent>
         </div>
-        <p className=" w-full text-muted-foreground text-xl max-md:w-full max-md:p-2">
+        <p className=" w-full text-muted-foreground text-[1rem] max-md:w-full max-md:p-2">
           {t("description")}
         </p>
       </div>
