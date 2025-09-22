@@ -22,7 +22,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${silkScreen.className} antialiased`}>
+      <body className={`${silkScreen.className} antialiased scrollbar-hidden`}>
         <NextIntlClientProvider>
           <SessionProvider>
             <BannerProvider>{children}</BannerProvider>

@@ -1,3 +1,4 @@
+import { auth } from "@/util/auth";
 import { isValidUser } from "@/util/util/client.functions";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
@@ -12,5 +13,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <>{await isValidUser() ? redirect("/app") : children}</>;
+  const userId = (await auth())?.user?.id
+  return <>{ userId ? redirect(`/app/${userId}`) : children}</>;
 }

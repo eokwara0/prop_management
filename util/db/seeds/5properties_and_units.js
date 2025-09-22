@@ -1,4 +1,5 @@
 
+const { faker } = require("@faker-js/faker");
 const { v4: uuidv4 } = require("uuid");
 
 /**
@@ -18,20 +19,39 @@ exports.seed = async function (knex) {
     {
       id: uuidv4(),
       name: "Sunset Apartments",
+      description : faker.lorem.text(),
       address: "123 Sunset Boulevard, Los Angeles, CA 90001",
+      city: faker.location.city(),
+      state: faker.location.state(),
+      postalCode : faker.location.countryCode(),
       ownerId: user.id,
+      price: 12000000,
+      mainImage : faker.image.avatar(),
+
     },
     {
       id: uuidv4(),
       name: "Riverside Complex",
+      description : faker.lorem.text(),
       address: "456 River Road, San Francisco, CA 94102",
+      city: faker.location.city(),
+      state: faker.location.state(),
+      postalCode : faker.location.countryCode(),
       ownerId: user.id,
+      price: 12000000,
+      mainImage : faker.image.avatar(),
     },
     {
       id: uuidv4(),
       name: "Downtown Towers",
       address: "789 Main Street, New York, NY 10001",
+      description : faker.lorem.text(),
+      city: faker.location.city(),
+      state: faker.location.state(),
+      postalCode : faker.location.countryCode(),
       ownerId: user.id,
+      price: 12000000,
+      mainImage : faker.image.avatar(),
     },
   ];
   // Insert properties

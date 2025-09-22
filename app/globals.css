@@ -1,10 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@tailwind utilities;
 
 /* @custom-variant dark (&:is(.dark *)); */
 
 :root {
   --dialog-color: #1c1c1e;
+  --mn-color: #1c1c1e00;
   --primary-p-color: #36f8050c;
   --secondary-p-color: #05dcf809;
   --border-color: #ffffff52;
@@ -58,6 +60,7 @@
 }
 
 @theme inline {
+  --color-mn: var(--mn-color);
   --color-dialog-color: var(--dialog-color);
   --color-pp-c: var(--primary-p-color);
   --color-pp-s: var(--secondary-p-color);
@@ -171,4 +174,25 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+    @layer utilities {
+      /* Chrome, Safari, and Opera */
+      .scrollbar-hidden::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Firefox */
+      .scrollbar-hidden {
+        scrollbar-width: none;
+      }
+
+      /* IE and Edge */
+      .scrollbar-hidden {
+        -ms-overflow-style: none;
+      }
+    }
+
+.lucide-x{
+  display: none;
 }

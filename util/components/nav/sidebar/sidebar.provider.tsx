@@ -5,12 +5,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@radix-ui/react-tooltip";
-import {
-  LogOut,
-  LucideProps,
-  PanelLeft,
-  Settings,
-} from "lucide-react";
+import { LogOut, LucideProps, Minus, PanelLeft, Settings } from "lucide-react";
 import Image from "next/image";
 import React, { useCallback, useEffect } from "react";
 import { createContext, useContext, useState } from "react";
@@ -21,10 +16,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
-import { getSession, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { SideBarData } from "./sidebar.data";
 import { AnimatePresence, motion } from "framer-motion";
+import { AuthProviderContext } from "@/util/auth/auth.provider";
+import { useIsMobile } from "./use.mobile";
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/shadcn/components/ui/drawer";
+import { Button } from "@/shadcn/components/ui/button";
+import { NavDrawer } from "./nav.drawer";
 
 const SIDEBAR_WIDTH = "3rem";
 
@@ -65,7 +65,7 @@ export function SideBarProvider({
   }, [open, toggle, setOpen]);
   return (
     <SideBarContext.Provider value={contextValue} {...props}>
-      <div className={`flex  min-h-full ${className}`}>{children}</div>
+      <div className={`flex  min-h-full  ${className}`}>{children}</div>
     </SideBarContext.Provider>
   );
 }
@@ -75,11 +75,11 @@ export function SideBarTrigger() {
 
   return (
     <div onClick={toggleSideBar}>
-      <Tooltip delayDuration={0} >
+      <Tooltip delayDuration={0}>
         <TooltipTrigger asChild className="p-1 cursor-pointer">
-            <div className="h-6 flex justify-center items-center hover:bg-l-c bg-button rounded">
-            <PanelLeft size={15}  />
-            </div>
+          <div className="h-6 flex justify-center items-center hover:bg-l-c bg-button rounded">
+            <PanelLeft size={15} />
+          </div>
         </TooltipTrigger>
         <TooltipContent sideOffset={20} align={"start"}>
           <Arrow />
@@ -93,15 +93,20 @@ export function SideBarTrigger() {
 }
 
 export type SideBarDataType = {
-    name : string
-    icon : React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>
-    href : string
-    active: boolean
-}
+  name: string;
+  icon: React.ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
+  >;
+  href: string;
+  active: boolean;
+};
 
 export function SideBar() {
+  const isMobile = useIsMobile()
   const { open } = useSideBarContext();
-  const [data, setData] = useState<SideBarDataType[]>(SideBarData);
+  const appAuthData = useContext(AuthProviderContext);
+
+  const [data, setData] = useState<SideBarDataType[]>(appAuthData?.sideBarData!);
 
   const onSideClick = useCallback(
     (sidebarcontext: SideBarDataType) => {
@@ -141,98 +146,117 @@ export function SideBar() {
   }, []);
 
   return (
-    <AnimatePresence>
-      {open && (
-        <motion.div
-          initial={{ width: 0, opacity: 0 }}
-          animate={{ width: SIDEBAR_WIDTH, opacity: 1 }}
-          exit={{ width: 0, opacity: 0 }}
-          transition={{ duration: 0.1 }}
-          style={{ overflow: "hidden" }}
-        >
-          <div
-            className={` border-r-[1px] border-r-gray-500 flex flex-col justify-between items-center min-h-screen transition-all duration-100 bg-gradient-to-br from-l_f_s to-l_f_f w-[${SIDEBAR_WIDTH}]`}
-          >
-            <div className="flex flex-col items-center">
-              <SideBarPanel>
-                <SideBarHeader />
-              </SideBarPanel>
-              <div className="flex flex-col gap-2">
-                {data.map((da) => (
-                  <SideBarPanel key={da.name} active={da.active}>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        {
-                          <Link
-                            className={`cursor-pointer`}
-                            href={da.href}
-                            onClick={() =>
-                              onSideClick({
-                                ...da,
-                                active: true,
-                              })
-                            }
-                          >
-                            <da.icon size={"1.3rem"} />
-                          </Link>
-                        }
-                      </TooltipTrigger>
-                      <TooltipContent
-                        className="bg-button p-2 rounded-md"
-                        side="right"
-                        sideOffset={20}
-                      >
-                        <Arrow width={10} height={5} className=" fill-button" />
-                        <p className="text-xs">{da.name}</p>
-                      </TooltipContent>
-                    </Tooltip>
+    <>
+      {
+        isMobile ? <div className="hidden">
+          <NavDrawer sdata={data}/>
+        </div>  : 
+        <>
+          <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ width: 0, opacity: 0 }}
+              animate={{ width: SIDEBAR_WIDTH, opacity: 1 }}
+              exit={{ width: 0, opacity: 0 }}
+              transition={{ duration: 0.1 }}
+              style={{ overflow: "hidden" }}
+            >
+              <div
+                className={` border-r-[1px] border-r-gray-500 flex flex-col justify-between items-center min-h-screen transition-all duration-100 bg-gradient-to-br from-l_f_s to-l_f_f w-[${SIDEBAR_WIDTH}]`}
+              >
+                <div className="flex flex-col items-center">
+                  <SideBarPanel>
+                    <SideBarHeader />
                   </SideBarPanel>
-                ))}
+                  <div className="flex flex-col gap-2">
+                    {data.map((da) => (
+                      <SideBarPanel key={da.name} active={da.active}>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            {
+                              <Link
+                                className={`cursor-pointer`}
+                                href={da.href}
+                                onClick={() =>
+                                  onSideClick({
+                                    ...da,
+                                    active: true,
+                                  })
+                                }
+                              >
+                                <da.icon size={"1.3rem"} />
+                              </Link>
+                            }
+                          </TooltipTrigger>
+                          <TooltipContent
+                            className="bg-button p-2 rounded-md"
+                            side="right"
+                            sideOffset={20}
+                          >
+                            <Arrow
+                              width={10}
+                              height={5}
+                              className=" fill-button"
+                            />
+                            <p className="text-xs">{da.name}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </SideBarPanel>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Settings className="cursor-pointer" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                      hideWhenDetached={true}
+                      align="end"
+                      alignOffset={2}
+                      className=" flex flex-col gap-3 p-1 rounded-md w-48   #shadow border-2 border-bc backdrop-blur-xs bg-gradient-to-r from-pp-s to-pp-s"
+                      side="right"
+                      sideOffset={20}
+                    >
+                      <DropdownMenuItem
+                        className="outline-none p-1 text-[1rem] rounded cursor-pointer hover:bg-button flex gap-2 justify-start items-center"
+                        onClick={() => signOut()}
+                      >
+                        <LogOut width={15} height={15} />
+                        Logout
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
-            </div>
-            <div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Settings className="cursor-pointer" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  hideWhenDetached={true}
-                  align="end"
-                  alignOffset={2}
-                  className=" flex flex-col gap-3 p-1 rounded-md w-48   #shadow border-2 border-bc backdrop-blur-xs bg-gradient-to-r from-pp-s to-pp-s"
-                  side="right"
-                  sideOffset={20}
-                >
-                  <DropdownMenuItem
-                    className="outline-none p-1 text-[1rem] rounded cursor-pointer hover:bg-button flex gap-2 justify-start items-center"
-                    onClick={() => signOut()}
-                  >
-                    <LogOut width={15} height={15} />
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence> 
+        </>
+        
+      }
+    </>
   );
 }
 
 export function SideBarPanel({
   children,
   className,
-  active = false
+  active = false,
+  onClick,
 }: {
   children: React.ReactNode;
   className?: string;
-  active? : boolean ;
+  active?: boolean;
+  onClick?: () => void;
 }) {
   return (
     <>
       <div
-        className={` rounded-md p-1 ${active ? "bg-button" : "hover:bg-d-background"} w-fit flex justify-center items-center ${className}`}
+        onClick={onClick}
+        className={` rounded-md p-1 ${
+          active ? "bg-button" : "hover:bg-d-background"
+        } w-fit flex justify-center items-center  ${className}`}
       >
         {children}
       </div>
@@ -240,10 +264,10 @@ export function SideBarPanel({
   );
 }
 
-export function SideBarHeader() {
+export function SideBarHeader({height , width } : {height? : number , width? : number }) {
   return (
     <div className="rounded-md bg-button p-1">
-      <Image src={AppLogo} width={70} height={70} alt="" />
+      <Image src={AppLogo} width={width ?? 70} height={height ?? 70} alt="" />
     </div>
   );
 }

@@ -13,8 +13,6 @@ export default async function SignInPage({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-
-
   return (
     <div className=" min-h-screen justify-center items-center content-center flex flex-col gap-2 bg-gradient-to-tr from-l_f_s to-l_f_f">
       <div className="justify-center items-center content-center  h-full flex flex-col gap-2 ">
@@ -26,7 +24,6 @@ export default async function SignInPage({
                 await signIn(
                   "credentials",
                   {
-                    redirectTo : "/app",
                     email: formData.get("email") as string,
                     password: formData.get("password") as string,
                   }
