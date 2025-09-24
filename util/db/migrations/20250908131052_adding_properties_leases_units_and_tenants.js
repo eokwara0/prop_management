@@ -16,6 +16,9 @@ exports.up = async function (knex) {
     table.string("postalCode").nullable();
     table.string("country").notNullable().defaultTo("South Africa");
     // Property type (apartment, house, commercial, etc.)
+    table.string("streetName").nullable().defaultTo("");
+    table.integer("streetNumber").nullable().defaultTo(10);
+    table.string("suburb").nullable().defaultTo("suburb");
     table
       .enum("type", [
         "house",

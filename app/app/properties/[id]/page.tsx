@@ -1,7 +1,5 @@
 import { AnimatedHeader } from "@/util/components/animated/animated.header";
 import { DialogComponent } from "@/util/components/modal/dialog";
-import { SideBarPanel } from "@/util/components/nav/sidebar/sidebar.provider";
-import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 export default async function Properties() {
@@ -13,7 +11,7 @@ export default async function Properties() {
         <div className="flex justify-between max-sm:flex-col max-sm:gap-3 max-sm:justify-start">
           <AnimatedHeader />
           <DialogComponent>
-            <div className=" p-2 rounded-md w-full cursor-pointer bg-button py-2 px-5  shadow-md shadow-black  inset-shadow-2xs inset-shadow-accent/50 text-xs">
+            <div className=" p-2 rounded-md w-full cursor-pointer bg-button py-2 px-5  shadow-xs shadow-black/50  inset-shadow-2xs inset-shadow-accent/50 text-md">
               Add Property
             </div>
           </DialogComponent>

@@ -148,7 +148,7 @@ export function SideBar() {
   return (
     <>
       {
-        isMobile ? <div className="hidden">
+        isMobile ? <div className="hidden max-md:flex max-md:justify-center max-md:items-center self-center">
           <NavDrawer sdata={data}/>
         </div>  : 
         <>

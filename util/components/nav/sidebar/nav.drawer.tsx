@@ -50,7 +50,7 @@ export function NavDrawer({ sdata }: { sdata: SideBarDataType[] }) {
       <Sheet open={true} modal={false}>
         <SheetContent
 
-          className=" h-fit bg-transparent flex justify-center items-center  w-full border-none p-2"
+          className=" h-fit self-center bg-transparent flex justify-center items-center  w-full border-none p-2"
           side="bottom"
           onInteractOutside={toggleSideBar}
         >
