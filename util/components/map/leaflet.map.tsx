@@ -42,7 +42,7 @@ export function FlyToLocation({ center, zoom }: FlyToProps) {
   return null;
 }
 export default function LeafletMap() {
-  const [place, setPlace] = useState("Durban, South Africa");
+  const [place, setPlace] = useState("johannesburg , south africa");
   const [locations, setLocations] = useState<GeoResult[]>([]);
   const [center, setCenter] = useState<LatLngExpression | null>(null);
   const [zoom, setZoom] = useState(5);

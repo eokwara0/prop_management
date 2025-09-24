@@ -1,6 +1,7 @@
 import { Property } from "@/util/models";
 import React from "react";
 import { createContext } from "react";
+import '../../map/index.css';
 
 
 export type catpureStateType =     'location'  | 'details' | 'images';
