@@ -262,7 +262,10 @@ function DetailsStep() {
 
   return (
     <>
-      <div> Detail Step</div>
+      <div className="w-full flex flex-col gap-3 px-5  py-3"> 
+
+        <h2 className="w-full">Fill in property details</h2>
+      </div>
     </>
   );
 }
