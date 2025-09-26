@@ -4,23 +4,15 @@ import {
   catpureStateType,
   PropertyFormContext,
   usePropertyFormContext,
-} from "./add.property.form.provider";
-import React, { useMemo } from "react";
+} from "./property.form.provider";
+import React from "react";
 import "@/app/globals.css";
 import dynamic from "next/dynamic";
-import { ChevronLeft, ChevronsRight } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/shadcn/components/ui/select";
-import { Switch } from "@/shadcn/components/ui/switch";
+import { ChevronLeft } from "lucide-react";
 import LocationStep from "./maps.form";
 import DetailsStep from "./property.detail.form";
+import ImageStep from "./image.form";
+import { useClientId } from "@/util/util/fetch.with.cred";
 const LeafletMap = dynamic(() => import("../../map/leaflet.map"), {
   ssr: false,
 });
@@ -30,7 +22,10 @@ export function PropertyFormProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [data, setData] = React.useState<Partial<Property> | null>(null);
+  const clientID = useClientId();
+  const [data, setData] = React.useState<Partial<Property> | null>({
+    ownerId : clientID
+  });
   const [captureState, setCatpureState] =
     React.useState<catpureStateType>("location");
   const updateData = (newData: Partial<Property>) => {
@@ -96,30 +91,3 @@ function PropertyFormData() {
 
 
 
-
-function ImageStep() {
-  const { updateData, data, nextStep, prevStep } = usePropertyFormContext();
-  return (
-    <div className="px-5 gap-2 flex flex-col">
-      <div className="flex justify-between items-center py-3">
-        <h2 className="w-full">Image Step</h2>
-        <button
-          onClick={prevStep}
-          className="text-button flex items-center cursor-pointer"
-        >
-          <ChevronLeft size={16} />
-          <span>Back</span>
-        </button>
-      </div>
-      <div className="w-[500px]"></div>
-      <div className="w-full">
-        <button
-          onClick={prevStep}
-          className="w-full cursor-pointer bg-button rounded-md text-lg "
-        >
-          Submit
-        </button>
-      </div>
-    </div>
-  );
-}

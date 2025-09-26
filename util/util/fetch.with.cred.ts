@@ -1,21 +1,39 @@
 "use client";
+import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 
+export function useClientId(){
+  const {data } = useSession()
+  if(!data){
+    throw new Error("session does not exist")
+  }
+  return data.user?.id;
+}
+
+export function useFetchWithCred() {
+  const { data } = useSession();
+  if (!data) {
+    throw new Error("this user is not logged on.");
+  }
+  return  ( url: string, options: RequestInit ) => {
+    try {
+       return fetchWithCred(url, data, options)
+    } catch (error) {
+      throw new Error((error as Error).message)
+    }
+  };
+}
 /**
  * Fetch wrapper that attaches Basic Auth credentials
  */
 export async function fetchWithCred(
   url: string,
+  session: Session,
   options: RequestInit = {}
 ) {
-  const { data: session } = useSession();
-
   if (!session || !session.user) {
     throw new Error("User is not authenticated");
   }
-
-  // Example: assuming you stored credentials in the session
-  // e.g., session.user.email as username and session.user.token/password as secret
   const username = session.user.email;
   const password = session.user.id; // or session.user.password if you store it
 

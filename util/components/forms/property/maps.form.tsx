@@ -1,8 +1,10 @@
 'use client'
 import { ChevronsRight } from "lucide-react";
-import LeafletMap from "../../map/leaflet.map";
-import { usePropertyFormContext } from "./add.property.form.provider";
+import { usePropertyFormContext } from "./property.form.provider";
 import { Badge } from "@/shadcn/components/ui/badge";
+import dynamic from "next/dynamic";
+
+const LeafletMap = dynamic(() => import('../../map/leaflet.map'), { ssr: false });
 
 export default function LocationStep() {
   const { updateData, data, nextStep, prevStep } = usePropertyFormContext();
@@ -10,10 +12,6 @@ export default function LocationStep() {
     <div className="w-full flex flex-col gap-1">
       <div className="flex justify-between">
         <h1 className="text-2xl px-5 py-2">Maps</h1>
-        {/* <button onClick={prevStep} className="text-button flex items-center px-5 cursor-pointer">
-          <ChevronLeft size={16}/>
-          <span>Back</span>
-          </button> */}
       </div>
       <p className="text-sm px-5 py-1 text-muted/50">
         Type in your properties location
@@ -177,7 +175,7 @@ export default function LocationStep() {
         <button
           onClick={nextStep}
           type="button"
-          className="flex cursor-pointer items-center justify-center w-full bg-button p-2 text-[0.9rem] rounded-lg inset-shadow-2xs inset-shadow-muted shadow-2xs shadow-black"
+          className="flex cursor-pointer items-center justify-center w-full bg-button p-2 text-[0.9rem] rounded-lg inset-shadow-2xs inset-shadow-muted/50 shadow-2xs shadow-black"
         >
           Continue
           <div className="flex gap-0">

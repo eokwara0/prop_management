@@ -2,7 +2,6 @@
 import { useState } from "react";
 import {  useRouter } from "next/navigation";
 import { UserType } from "@/util/interfaces/roles";
-import { useBanner } from "@/util/components/context/banner/banner.hook";
 import SignupValidation from "@/util/components/authentication/signup.password.validation.component";
 import SignupPasswordValidationProvider from "@/util/components/context/authentication/signup.password.validation.provider";
 import AppLogo from "@/assets/logo/icon2.png";
@@ -12,6 +11,7 @@ import SignupProvider from "@/util/components/authentication/signup.provider";
 import Loader from "@/util/components/loader/loader";
 import Modal from "@/util/components/modal/modal";
 import { SignupStatus } from "@/util/interfaces/signup.data";
+import { useBanner } from "@/util/components/context/banner/banner.context";
 
 
 
@@ -19,7 +19,7 @@ const strongPasswordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
 
 export default function SignUpPage() {
   const [password, setPassword] = useState("");
-  const { showBanner } = useBanner();
+  const  {show} = useBanner();
   const router = useRouter();
   const [retype, setRetype] = useState("");
   const [status, setStatus] = useState<SignupStatus>(SignupStatus.INITIAL);

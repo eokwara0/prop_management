@@ -3,14 +3,11 @@ import Account from "./account";
 import Session from "./session";
 import Authenticator from "./authenticator";
 import IUser from "@/util/interfaces/iuser";
+import { Knex } from "knex";
 
 
 
 class User extends IUser {
-  /**
-   * Returns the table name for the User model.
-   * This is used by Objection.js to map the model to the database table.
-   */
   static get tableName() {
     return "user";
   }

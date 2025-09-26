@@ -2,11 +2,10 @@
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L, { LatLngExpression } from "leaflet";
-import { LocationEditIcon } from "lucide-react";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import { IoSearch } from "react-icons/io5";
-import { usePropertyFormContext } from "../forms/property/add.property.form.provider";
+import { usePropertyFormContext } from "../forms/property/property.form.provider";
 import './index.css';
 
 

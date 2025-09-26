@@ -109,8 +109,7 @@ class Property extends BaseModel {
       throw new Error("Error creating Property");
     } catch (error) {
       await trx?.rollback();
-      console.log(error);
-      return undefined;
+      throw new Error((error as Error).message);
     }
   }
 
