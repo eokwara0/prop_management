@@ -1,1 +1,0 @@
-const BUTTON_STYLE = "bg-button transition p-[20%]"
